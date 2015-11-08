@@ -1,54 +1,32 @@
 "use strict";
 
-var list = [5, 4, 1, 7, 9, 2, 0, 3, 6, 8];
+var a = [2,3,1,5,9,4,0,8,6,7];
 
-function insertSort(list) {
-    for (let j = 1; j < list.length; j++) {
-        let key = list[j],
-            i = j - 1;
+var checkCount = 0,
+    replaceCount = 0;
 
-        while (i > -1 && list[i] > key) {
-            list[i + 1] = list[i];
+function sort(array) {
+    for (let i = 1, count = array.length; i < count; i++) {
+        let pick = array[i],
+            j = i;
 
-            i--;
+        while (pick < array[j - 1] && j - 1 >= 0) {
+            array[j] = array[j - 1];
+            j--;
+
+            // *** debug ***
+            replaceCount++;
+            checkCount++;
+            // *** debug ***
         }
 
-        list[i + 1] = key;
+        array[j] = pick;
     }
 }
 
-function invertInsertSort(list) {
-    for (let j = 1; j < list.length; j++) {
-        let key = list[j],
-            i = j - 1;
+console.log(a);
+sort(a);
+console.log(a);
 
-        while (i > -1 && list[i] < key) {
-            list[i + 1] = list[i];
-
-            i--;
-        }
-
-        list[i + 1] = key;
-    }
-}
-
-function find(list, num) {
-    let i = 0;
-
-    while (list[i]) {
-        if (list[i] === num) {
-            return i;
-        }
-
-        i++;
-    }
-
-    return null;
-}
-
-//insertSort(list);
-//invertInsertSort(list);
-
-//console.log(list);
-
-console.log(find(list, 99));
+console.log('checks', checkCount);
+console.log('replaces', replaceCount);
