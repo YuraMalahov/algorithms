@@ -18,7 +18,7 @@ var a = [
     N = a.length;
 
 for (let d = W - 1; d >= 0; d--) {
-    let count = new Array(R).fill(0, 0, 256);
+    let count = new Array(R).fill(0, 0, R);
 
     for (let i = 0; i < N; i++) {
         count[a[i].charCodeAt(d) + 1]++;
