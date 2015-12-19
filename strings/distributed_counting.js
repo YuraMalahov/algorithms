@@ -28,6 +28,8 @@ for (let i = 0; i < N; i++) {
     count[a[i].key + 1]++;
 }
 
+console.log(count);
+
 for (let r = 0; r < R; r++) {
     count[r + 1] += count[r];
 }
