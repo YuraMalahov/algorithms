@@ -1,32 +1,60 @@
 <?php
 
+class Key
+{
+    private $key = null;
+
+    private $val = 0;
+
+    public function __construct(string $key)
+    {
+        $this->key = $key;
+        $this->val = array_reduce(str_split($key), function($res, $a) {
+            return $res + ord($a);
+        }, 0);
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    public function getVal(): int
+    {
+        return $this->val;
+    }
+
+    public function compare(Key $key)
+    {
+        return $this->val <=> $key->getVal();
+    }
+}
+
 class Node
 {
     private $key;
 
     private $value;
 
-    private $left;
+    private $left = null;
 
-    private $right;
+    private $right = null;
 
-    private $length;
+    private $length = 0;
 
-    public function __construct($key, $value, int $length)
+    public function __construct(Key $key, $value)
     {
         $this->key = $key;
         $this->value = $value;
-        $this->length = $length;
-        $this->left = null;
-        $this->right = null;
+        $this->length = $key->getVal() ? 1 : 0;
     }
 
-    public function getKey()
+    public function getKey(): Key
     {
         return $this->key;
     }
 
-    public function setKey($key)
+    public function setKey(Key $key)
     {
         $this->key = $key;
     }
@@ -41,34 +69,41 @@ class Node
         $this->value = $value;
     }
 
-    public function getLeft()
+    public function getLeft(): Node
     {
+        if ($this->left === null) {
+            $class = self::class;
+            $this->left = new $class(new Key(''), null);
+        }
+
         return $this->left;
     }
 
     public function setLeft(Node $left)
     {
+        $this->length += $left->getLength();
         $this->left = $left;
     }
 
-    public function getRight()
+    public function getRight(): Node
     {
+        if ($this->right === null) {
+            $class = self::class;
+            $this->right = new $class(new Key(''), null);
+        }
+
         return $this->right;
     }
 
     public function setRight(Node $right)
     {
+        $this->length += $right->getLength();
         $this->right = $right;
     }
 
     public function getLength(): int
     {
         return $this->length;
-    }
-
-    public function setLength(int $length)
-    {
-        $this->length = $length;
     }
 }
 
@@ -91,59 +126,90 @@ class BinarySearchTree
         return $node->getLength();
     }
 
-    public function get($key)
+    public function get(Key $key)
     {
         return $this->_get($this->root, $key);
     }
 
-    private function _get($node, $key)
+    private function _get(Node $node, Key $key)
     {
-        if (!$node) {
+        if (!$node->getLength()) {
             return null;
         }
 
-        if ($node->getKey() > $key) {
+        $cmp = $node->getKey()->compare($key);
+        if ($cmp > 0) {
             return $this->_get($node->getLeft(), $key);
-        } else if ($node->getKey() < $key) {
+        } else if ($cmp < 0) {
             return $this->_get($node->getRight(), $key);
         }
 
         return $node->getValue();
     }
 
-    public function put($key, $value)
+    public function put(Key $key, $value)
     {
         $this->root = $this->_put($this->root, $key, $value);
     }
 
-    private function _put($node, $key, $value)
+    private function _put(Node $node, Key $key, $value)
     {
-        if (!$node) {
+        if (!$node->getLength()) {
             return new Node($key, $value, 1);
         }
 
-        if ($node->getKey() > $key) {
+        $cmp = $node->getKey()->compare($key);
+        if ($cmp > 0) {
             $node->setLeft($this->_put($node->getLeft(), $key, $value));
-        } else if ($node->getKey() < $key) {
+        } else if ($cmp < 0) {
             $node->setRight($this->_put($node->getRight(), $key, $value));
         } else {
             $node->setValue($value);
         }
 
-        $leftSize = $node->getLeft() ? $node->getLeft()->getLength() : 0;
-        $rightSize = $node->getRight() ? $node->getRight()->getLength() : 0;
-        $node->setLength($leftSize + $rightSize + 1);
-
         return $node;
+    }
+
+    public function min(): Node
+    {
+        return $this->_min($this->root);
+    }
+
+    private function _min(Node $node): Node
+    {
+        if (!$node->getLeft()->getLength()) {
+            return $node;
+        }
+
+        return $this->_min($node->getLeft());
+    }
+
+    public function max(): Node
+    {
+        return $this->_max($this->root);
+    }
+
+    private function _max(Node $node): Node
+    {
+        if (!$node->getRight()->getLength()) {
+            return $node;
+        }
+
+        return $this->_max($node->getRight());
     }
 }
 
-$bst = new BinarySearchTree(new Node(23, 'm', 1));
+$m = new Key('m');
+$bst = new BinarySearchTree(new Node($m, 23));
 
-echo $bst->length() . "\n";
-echo $bst->get(23) . "\n";
+$a = new Key('a');
+$bst->put($a, 99);
+$x = new Key('x');
+$bst->put($x, 88);
 
-$bst->put(99, 'a');
-
-echo $bst->length() . "\n";
-echo $bst->get(99) . "\n";
+echo "length: {$bst->length()}\n";
+echo "m: {$bst->get($m)}\n";
+echo "a: {$bst->get($a)}\n";
+echo "x: {$bst->get($x)}\n";
+echo "min: {$bst->min()->getValue()}\n";
+echo "max: {$bst->max()->getValue()}\n";
