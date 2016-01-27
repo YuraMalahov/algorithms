@@ -81,8 +81,8 @@ class Node
 
     public function setLeft(Node $left)
     {
-        $this->length += $left->getLength();
         $this->left = $left;
+        $this->updateLength();
     }
 
     public function getRight(): Node
@@ -97,13 +97,19 @@ class Node
 
     public function setRight(Node $right)
     {
-        $this->length += $right->getLength();
         $this->right = $right;
+        $this->updateLength();
     }
 
     public function getLength(): int
     {
         return $this->length;
+    }
+
+    private function updateLength()
+    {
+        $this->length = $this->getLeft()->getLength() +
+            $this->getRight()->getLength() + 1;
     }
 }
 
@@ -126,7 +132,7 @@ class BinarySearchTree
         return $node->getLength();
     }
 
-    public function get(Key $key)
+    public function get(Key $key): Node
     {
         return $this->_get($this->root, $key);
     }
@@ -144,7 +150,7 @@ class BinarySearchTree
             return $this->_get($node->getRight(), $key);
         }
 
-        return $node->getValue();
+        return $node;
     }
 
     public function put(Key $key, $value)
@@ -155,7 +161,7 @@ class BinarySearchTree
     private function _put(Node $node, Key $key, $value)
     {
         if (!$node->getLength()) {
-            return new Node($key, $value, 1);
+            return new Node($key, $value);
         }
 
         $cmp = $node->getKey()->compare($key);
@@ -197,6 +203,60 @@ class BinarySearchTree
 
         return $this->_max($node->getRight());
     }
+
+    public function floor(Key $key): Node
+    {
+        return $this->_floor($this->root, $key);
+    }
+
+    // TODO: check
+    private function _floor(Node $node, Key $key)
+    {
+        if (!$node->getLength()) {
+            return $node;
+        }
+
+        $cmp = $node->getKey()->compare($key);
+        if ($cmp === 0) {
+            return $node;
+        } else if ($cmp > 0) {
+            return $this->_floor($node->getLeft(), $key);
+        }
+
+        $t = $this->_floor($node->getRight(), $key);
+        if ($t->getLength()) {
+            return $t;
+        }
+
+        return $node;
+    }
+
+    public function ceil(Key $key): Node
+    {
+        return $this->_ceil($this->root, $key);
+    }
+
+    // TODO: check
+    private function _ceil(Node $node, Key $key)
+    {
+        if (!$node->getLength()) {
+            return $node;
+        }
+
+        $cmp = $node->getKey()->compare($key);
+        if ($cmp === 0) {
+            return $node;
+        } else if ($cmp < 0) {
+            return $this->_ceil($node->getRight(), $key);
+        }
+
+        $t = $this->_ceil($node->getLeft(), $key);
+        if ($t->getLength()) {
+            return $t;
+        }
+
+        return $node;
+    }
 }
 
 $m = new Key('m');
@@ -206,10 +266,23 @@ $a = new Key('a');
 $bst->put($a, 99);
 $x = new Key('x');
 $bst->put($x, 88);
+$c = new Key('c');
+$bst->put($c, 77);
+$z = new Key('z');
+$bst->put($z, 66);
 
 echo "length: {$bst->length()}\n";
-echo "m: {$bst->get($m)}\n";
-echo "a: {$bst->get($a)}\n";
-echo "x: {$bst->get($x)}\n";
+echo "m: {$bst->get($m)->getValue()}\n";
+echo "a: {$bst->get($a)->getValue()}\n";
+echo "a length: {$bst->get($a)->getLength()}\n";
+echo "x: {$bst->get($x)->getValue()}\n";
+echo "x length: {$bst->get($x)->getLength()}\n";
+echo "c: {$bst->get($c)->getValue()}\n";
+echo "z: {$bst->get($z)->getValue()}\n";
 echo "min: {$bst->min()->getValue()}\n";
 echo "max: {$bst->max()->getValue()}\n";
+
+$b = new Key('b');
+echo "floor: {$bst->floor($b)->getKey()->getKey()}\n";
+$y = new Key('y');
+echo "ceil: {$bst->floor($y)->getKey()->getKey()}\n";
