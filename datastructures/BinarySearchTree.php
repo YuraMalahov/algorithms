@@ -127,14 +127,54 @@ class BinarySearchTree
         return $this->root->getLength();
     }
 
-    public static function size(Node $node)
-    {
-        return $node->getLength();
-    }
-
     public function get(Key $key): Node
     {
         return $this->_get($this->root, $key);
+    }
+
+    public function put(Key $key, $value)
+    {
+        $this->root = $this->_put($this->root, $key, $value);
+    }
+
+    public function min(): Node
+    {
+        return $this->_min($this->root);
+    }
+
+    public function max(): Node
+    {
+        return $this->_max($this->root);
+    }
+
+    public function floor(Key $key): Node
+    {
+        return $this->_floor($this->root, $key);
+    }
+
+    public function ceil(Key $key): Node
+    {
+        return $this->_ceil($this->root, $key);
+    }
+
+    public function select(int $i): Node
+    {
+        return $this->_select($this->root, $i);
+    }
+
+    public function indexOf(Key $key): int
+    {
+        return $this->_indexOf($this->root, $key);
+    }
+
+    public function deleteMin()
+    {
+        $this->root = $this->_deleteMin($this->root);
+    }
+
+    public function deleteMax()
+    {
+        $this->root = $this->_deleteMax($this->root);
     }
 
     private function _get(Node $node, Key $key)
@@ -151,11 +191,6 @@ class BinarySearchTree
         }
 
         return $node;
-    }
-
-    public function put(Key $key, $value)
-    {
-        $this->root = $this->_put($this->root, $key, $value);
     }
 
     private function _put(Node $node, Key $key, $value)
@@ -176,11 +211,6 @@ class BinarySearchTree
         return $node;
     }
 
-    public function min(): Node
-    {
-        return $this->_min($this->root);
-    }
-
     private function _min(Node $node): Node
     {
         if (!$node->getLeft()->getLength()) {
@@ -190,11 +220,6 @@ class BinarySearchTree
         return $this->_min($node->getLeft());
     }
 
-    public function max(): Node
-    {
-        return $this->_max($this->root);
-    }
-
     private function _max(Node $node): Node
     {
         if (!$node->getRight()->getLength()) {
@@ -202,11 +227,6 @@ class BinarySearchTree
         }
 
         return $this->_max($node->getRight());
-    }
-
-    public function floor(Key $key): Node
-    {
-        return $this->_floor($this->root, $key);
     }
 
     // TODO: check
@@ -231,11 +251,6 @@ class BinarySearchTree
         return $node;
     }
 
-    public function ceil(Key $key): Node
-    {
-        return $this->_ceil($this->root, $key);
-    }
-
     // TODO: check
     private function _ceil(Node $node, Key $key)
     {
@@ -257,6 +272,58 @@ class BinarySearchTree
 
         return $node;
     }
+
+    private function _select(Node $node, int $i): Node
+    {
+        if (!$node->getLength()) {
+            return $node;
+        }
+
+        $index = $node->getLeft()->getLength();
+        if ($index > $i) {
+            return $this->_select($node->getLeft(), $i);
+        } else if ($index < $i) {
+            return $this->_select($node->getRight(), $i - $index - 1);
+        }
+
+        return $node;
+    }
+
+    private function _indexOf(Node $node, Key $key): int
+    {
+        if (!$node->getLength()) {
+            return 0;
+        }
+
+        $cmp = $node->getKey()->compare($key);
+        if ($cmp > 0) {
+            return $this->_indexOf($node->getLeft(), $key);
+        } else if ($cmp < 0) {
+            return 1 + $node->getLeft()->getLength() + $this->_indexOf($node->getRight(), $key);
+        }
+
+        return $node->getLength() - 1 - $node->getRight()->getLength();
+    }
+
+    private function _deleteMin(Node $node): Node
+    {
+        if (!$node->getLeft()->getLength()) {
+            return $node->getRight();
+        }
+
+        $node->setLeft($this->_deleteMin($node->getLeft()));
+        return $node;
+    }
+
+    private function _deleteMax(Node $node): Node
+    {
+        if (!$node->getRight()->getLength()) {
+            return $node->getLeft();
+        }
+
+        $node->setRight($this->_deleteMax($node->getRight()));
+        return $node;
+    }
 }
 
 $m = new Key('m');
@@ -270,10 +337,13 @@ $c = new Key('c');
 $bst->put($c, 77);
 $z = new Key('z');
 $bst->put($z, 66);
+$j = new Key('j');
+$bst->put($j, 52);
 
 echo "length: {$bst->length()}\n";
 echo "m: {$bst->get($m)->getValue()}\n";
 echo "a: {$bst->get($a)->getValue()}\n";
+echo "a: {$bst->get($a)->getRight()->getRight()->getKey()->getKey()}\n";
 echo "a length: {$bst->get($a)->getLength()}\n";
 echo "x: {$bst->get($x)->getValue()}\n";
 echo "x length: {$bst->get($x)->getLength()}\n";
@@ -283,6 +353,16 @@ echo "min: {$bst->min()->getValue()}\n";
 echo "max: {$bst->max()->getValue()}\n";
 
 $b = new Key('b');
-echo "floor: {$bst->floor($b)->getKey()->getKey()}\n";
+echo "floor b: {$bst->floor($b)->getKey()->getKey()}\n";
 $y = new Key('y');
-echo "ceil: {$bst->floor($y)->getKey()->getKey()}\n";
+echo "ceil y: {$bst->ceil($y)->getKey()->getKey()}\n";
+
+$k = new Key('k');
+echo "floor k: {$bst->ceil($k)->getKey()->getKey()}\n";
+
+echo "select : {$bst->select(5)->getKey()->getKey()}\n";
+echo "indexOf : {$bst->indexOf($z)}\n";
+
+$bst->deleteMin();
+echo "select : {$bst->select(0)->getKey()->getKey()}\n";
+echo "length: {$bst->length()}\n";
