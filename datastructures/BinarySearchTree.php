@@ -177,6 +177,11 @@ class BinarySearchTree
         $this->root = $this->_deleteMax($this->root);
     }
 
+    public function delete(Key $key)
+    {
+        $this->root = $this->_delete($this->root, $key);
+    }
+
     private function _get(Node $node, Key $key)
     {
         if (!$node->getLength()) {
@@ -322,6 +327,35 @@ class BinarySearchTree
         }
 
         $node->setRight($this->_deleteMax($node->getRight()));
+        return $node;
+    }
+
+    private function _delete(Node $node, Key $key): Node
+    {
+        if (!$node->getLength()) {
+            return new Node(new Key(''), null);
+        }
+
+        $cmp = $node->getKey()->compare($key);
+        if ($cmp > 0) {
+            $node->setLeft($this->_delete($node->getLeft(), $key));
+        } else if ($cmp < 0) {
+            $node->setRight($this->_delete($node->getRight(), $key));
+        }
+        
+        if (!$node->getRight()->getLength()) {
+            return $node->getLeft();
+        }
+
+        if (!$node->getLeft()->getLength()) {
+            return $node->getRight();
+        }
+        
+        $tmp = $node;
+        $node = $this->_min($tmp->getRight());
+        $node->setRight($this->_deleteMin($tmp->getRight()));
+        $node->setLeft($tmp->getLeft());
+        
         return $node;
     }
 }
