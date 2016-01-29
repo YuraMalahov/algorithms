@@ -1,64 +1,158 @@
 <?php
 
-class Key
+namespace BST;
+
+/**
+ * Interface KeyInterface
+ * @package BST
+ */
+interface KeyInterface
 {
-    private $key = null;
+    /**
+     * @return mixed
+     */
+    function getKey();
 
-    private $val = 0;
+    /**
+     * @return int
+     */
+    function getVal(): int;
 
-    public function __construct(string $key)
+    /**
+     * @param KeyInterface $key
+     * @return int
+     */
+    function compare(KeyInterface $key): int;
+}
+
+/**
+ * Class Key
+ * @package BST
+ */
+class Key implements KeyInterface
+{
+    /**
+     * @var string
+     */
+    private $key;
+
+    /**
+     * Key value
+     * @var int
+     */
+    private $val;
+
+    /**
+     * Key constructor.
+     * @param string|string $key
+     */
+    public function __construct(string $key = '')
     {
         $this->key = $key;
+        // compute key value
         $this->val = array_reduce(str_split($key), function($res, $a) {
             return $res + ord($a);
         }, 0);
     }
 
+    /**
+     * Get key
+     * @return string
+     */
     public function getKey(): string
     {
         return $this->key;
     }
 
+    /**
+     * Get key value
+     * @return int
+     */
     public function getVal(): int
     {
         return $this->val;
     }
 
-    public function compare(Key $key)
+
+    /**
+     * Compare two keys. return "0" if they are equal, "1" if current key is bigger or "-1" if current key is smaller
+     * @param Key $key
+     * @return int
+     */
+    public function compare(KeyInterface $key): int
     {
         return $this->val <=> $key->getVal();
     }
 }
 
+/**
+ * Class Node
+ * @package BST
+ */
 class Node
 {
+    /**
+     * @var Key
+     */
     private $key;
 
+    /**
+     * @var mixed
+     */
     private $value;
 
+    /**
+     * Left link
+     * @var null|Node
+     */
     private $left = null;
 
+    /**
+     * Right link
+     * @var null|Node
+     */
     private $right = null;
 
+    /**
+     * Node length
+     * @var int
+     */
     private $length = 0;
 
-    public function __construct(Key $key, $value)
+    /**
+     * Node constructor.
+     * @param KeyInterface $key
+     * @param mixed $value
+     */
+    public function __construct(KeyInterface $key, $value)
     {
         $this->key = $key;
         $this->value = $value;
         $this->length = $key->getVal() ? 1 : 0;
     }
 
-    public function getKey(): Key
+    /**
+     * Get key
+     * @return KeyInterface
+     */
+    public function getKey(): KeyInterface
     {
         return $this->key;
     }
 
-    public function setKey(Key $key)
+    /**
+     * Set key
+     * @param KeyInterface $key
+     */
+    public function setKey(KeyInterface $key)
     {
         $this->key = $key;
     }
 
+    /**
+     * Get value
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->value;
@@ -69,43 +163,66 @@ class Node
         $this->value = $value;
     }
 
+    /**
+     * Get left link
+     * @return Node
+     */
     public function getLeft(): Node
     {
         if ($this->left === null) {
             $class = self::class;
-            $this->left = new $class(new Key(''), null);
+            $this->left = new $class(new Key(), null);
         }
 
         return $this->left;
     }
 
+    /**
+     * Set left link
+     * @param Node $left
+     */
     public function setLeft(Node $left)
     {
         $this->left = $left;
         $this->updateLength();
     }
 
+    /**
+     * Get right link
+     * @return Node
+     */
     public function getRight(): Node
     {
         if ($this->right === null) {
             $class = self::class;
-            $this->right = new $class(new Key(''), null);
+            $this->right = new $class(new Key(), null);
         }
 
         return $this->right;
     }
 
+    /**
+     * Set right link
+     * @param Node $right
+     */
     public function setRight(Node $right)
     {
         $this->right = $right;
         $this->updateLength();
     }
 
+    /**
+     * Get node length
+     * @return int
+     */
     public function getLength(): int
     {
         return $this->length;
     }
 
+    /**
+     * Update node length
+     */
     private function updateLength()
     {
         $this->length = $this->getLeft()->getLength() +
@@ -113,76 +230,146 @@ class Node
     }
 }
 
+/**
+ * Class BinarySearchTree
+ * @package BST
+ */
 class BinarySearchTree
 {
+    /**
+     * Root node
+     * @var Node
+     */
     private $root;
 
+    /**
+     * BinarySearchTree constructor.
+     * @param Node $root
+     */
     public function __construct(Node $root)
     {
         $this->root = $root;
     }
 
+    /**
+     * Get tree length
+     * @return int
+     */
     public function length()
     {
         return $this->root->getLength();
     }
 
-    public function get(Key $key): Node
+    /**
+     * Get node by key
+     * @param KeyInterface $key
+     * @return Node
+     */
+    public function get(KeyInterface $key): Node
     {
         return $this->_get($this->root, $key);
     }
 
-    public function put(Key $key, $value)
+    /**
+     * Put node into tree
+     * @param KeyInterface $key
+     * @param $value
+     */
+    public function put(KeyInterface $key, $value)
     {
         $this->root = $this->_put($this->root, $key, $value);
     }
 
+    /**
+     * Get min node in current tree
+     * @return Node
+     */
     public function min(): Node
     {
         return $this->_min($this->root);
     }
 
+    /**
+     * Get max node in current tree
+     * @return Node
+     */
     public function max(): Node
     {
         return $this->_max($this->root);
     }
 
-    public function floor(Key $key): Node
+    /**
+     * Get floor node by key in current tree
+     * @param KeyInterface $key
+     * @return Node
+     */
+    public function floor(KeyInterface $key): Node
     {
         return $this->_floor($this->root, $key);
     }
 
-    public function ceil(Key $key): Node
+    /**
+     * Get ceil node by key in current tree
+     * @param KeyInterface $key
+     * @return Node
+     */
+    public function ceil(KeyInterface $key): Node
     {
         return $this->_ceil($this->root, $key);
     }
 
+    /**
+     * Get node by index in current tree
+     * @param int $i
+     * @return Node
+     */
     public function select(int $i): Node
     {
         return $this->_select($this->root, $i);
     }
 
-    public function indexOf(Key $key): int
+    /**
+     * Get index of node by key in current tree
+     * @param KeyInterface $key
+     * @return int
+     */
+    public function indexOf(KeyInterface $key): int
     {
         return $this->_indexOf($this->root, $key);
     }
 
+    /**
+     * Delete min node in current tree
+     */
     public function deleteMin()
     {
         $this->root = $this->_deleteMin($this->root);
     }
 
+    /**
+     * Delete max node in current tree
+     */
     public function deleteMax()
     {
         $this->root = $this->_deleteMax($this->root);
     }
 
-    public function delete(Key $key)
+    /**
+     * Delete node by key
+     * @param KeyInterface $key
+     */
+    public function delete(KeyInterface $key)
     {
         $this->root = $this->_delete($this->root, $key);
     }
 
-    private function _get(Node $node, Key $key)
+    /**
+     * Get node in sub tree by key
+     * @param Node $node
+     * @param KeyInterface $key
+     * @return Node|null
+     */
+    private function _get(Node $node, KeyInterface $key)
     {
         if (!$node->getLength()) {
             return null;
@@ -198,7 +385,14 @@ class BinarySearchTree
         return $node;
     }
 
-    private function _put(Node $node, Key $key, $value)
+    /**
+     * Put node in sub tree
+     * @param Node $node
+     * @param KeyInterface $key
+     * @param $value
+     * @return Node
+     */
+    private function _put(Node $node, KeyInterface $key, $value)
     {
         if (!$node->getLength()) {
             return new Node($key, $value);
@@ -216,8 +410,14 @@ class BinarySearchTree
         return $node;
     }
 
+    /**
+     * Get min node in sub tree
+     * @param Node $node
+     * @return Node
+     */
     private function _min(Node $node): Node
     {
+        // if it is last node in left branch
         if (!$node->getLeft()->getLength()) {
             return $node;
         }
@@ -225,8 +425,14 @@ class BinarySearchTree
         return $this->_min($node->getLeft());
     }
 
+    /**
+     * Get max node in sub tree
+     * @param Node $node
+     * @return Node
+     */
     private function _max(Node $node): Node
     {
+        // if it is last node in right branch
         if (!$node->getRight()->getLength()) {
             return $node;
         }
@@ -234,8 +440,14 @@ class BinarySearchTree
         return $this->_max($node->getRight());
     }
 
-    // TODO: check
-    private function _floor(Node $node, Key $key)
+    /**
+     * TODO: check
+     * Get floor node by key in sub tree
+     * @param Node $node
+     * @param KeyInterface $key
+     * @return Node
+     */
+    private function _floor(Node $node, KeyInterface $key)
     {
         if (!$node->getLength()) {
             return $node;
@@ -256,8 +468,14 @@ class BinarySearchTree
         return $node;
     }
 
-    // TODO: check
-    private function _ceil(Node $node, Key $key)
+    /**
+     * TODO: check
+     * Gen ceil node by key in sub tree
+     * @param Node $node
+     * @param KeyInterface $key
+     * @return Node
+     */
+    private function _ceil(Node $node, KeyInterface $key)
     {
         if (!$node->getLength()) {
             return $node;
@@ -278,41 +496,69 @@ class BinarySearchTree
         return $node;
     }
 
+    /**
+     * Get node by index in sub tree
+     * @param Node $node
+     * @param int $i
+     * @return Node
+     */
     private function _select(Node $node, int $i): Node
     {
         if (!$node->getLength()) {
             return $node;
         }
 
-        $index = $node->getLeft()->getLength();
-        if ($index > $i) {
+        // if $i is smaller than count of nodes in left branch we go left otherwise we go right
+        $leftBranchLength = $node->getLeft()->getLength();
+        if ($leftBranchLength > $i) {
             return $this->_select($node->getLeft(), $i);
-        } else if ($index < $i) {
-            return $this->_select($node->getRight(), $i - $index - 1);
+        } else if ($leftBranchLength < $i) {
+            // subtract from index left branch length and current node "-1"
+            return $this->_select($node->getRight(), $i - $leftBranchLength - 1);
         }
 
         return $node;
     }
 
-    private function _indexOf(Node $node, Key $key): int
+    /**
+     * Get node index by key in sub tree
+     * @param Node $node
+     * @param KeyInterface $key
+     * @return int
+     */
+    private function _indexOf(Node $node, KeyInterface $key): int
     {
         if (!$node->getLength()) {
-            return 0;
+            return -1;
         }
 
+        // if key is smaller than key of current node we go left otherwise we go right
         $cmp = $node->getKey()->compare($key);
         if ($cmp > 0) {
             return $this->_indexOf($node->getLeft(), $key);
         } else if ($cmp < 0) {
-            return 1 + $node->getLeft()->getLength() + $this->_indexOf($node->getRight(), $key);
+            $next = $this->_indexOf($node->getRight(), $key);
+            if (-1 === $next) {
+                return -1;
+            }
+
+            // add current node "+1", add left branch length and add return of recursive call
+            return 1 + $node->getLeft()->getLength() + $next;
         }
 
+        // subtract from node length "-1" to indexing from "0" and right branch length
         return $node->getLength() - 1 - $node->getRight()->getLength();
     }
 
+    /**
+     * Delete min node in sub tree
+     * @param Node $node
+     * @return Node
+     */
     private function _deleteMin(Node $node): Node
     {
         if (!$node->getLeft()->getLength()) {
+            // set left link in previous node with right link of min node
             return $node->getRight();
         }
 
@@ -320,9 +566,15 @@ class BinarySearchTree
         return $node;
     }
 
+    /**
+     * Delete max node in sub tree
+     * @param Node $node
+     * @return Node
+     */
     private function _deleteMax(Node $node): Node
     {
         if (!$node->getRight()->getLength()) {
+            // set right link in previous node with left link of max node
             return $node->getLeft();
         }
 
@@ -330,7 +582,13 @@ class BinarySearchTree
         return $node;
     }
 
-    private function _delete(Node $node, Key $key): Node
+    /**
+     * Delete node by key in sub tree
+     * @param Node $node
+     * @param KeyInterface $key
+     * @return Node
+     */
+    private function _delete(Node $node, KeyInterface $key): Node
     {
         if (!$node->getLength()) {
             return new Node(new Key(''), null);
@@ -341,21 +599,27 @@ class BinarySearchTree
             $node->setLeft($this->_delete($node->getLeft(), $key));
         } else if ($cmp < 0) {
             $node->setRight($this->_delete($node->getRight(), $key));
-        }
-        
-        if (!$node->getRight()->getLength()) {
-            return $node->getLeft();
+        } else {
+            if (!$node->getRight()->getLength()) {
+                // if node have empty right link replace it with his left link
+                return $node->getLeft();
+            }
+
+            if (!$node->getLeft()->getLength()) {
+                // if node have empty left link replace it with his right link
+                return $node->getRight();
+            }
+
+            // save link
+            $tmp = $node;
+            // get min node in right branch
+            $node = $this->_min($tmp->getRight());
+            // unset min node in tree and set right link in min node with right branch of deleted node
+            $node->setRight($this->_deleteMin($tmp->getRight()));
+            // set left link in min node with left branch of deleted node
+            $node->setLeft($tmp->getLeft());
         }
 
-        if (!$node->getLeft()->getLength()) {
-            return $node->getRight();
-        }
-        
-        $tmp = $node;
-        $node = $this->_min($tmp->getRight());
-        $node->setRight($this->_deleteMin($tmp->getRight()));
-        $node->setLeft($tmp->getLeft());
-        
         return $node;
     }
 }
@@ -375,28 +639,28 @@ $j = new Key('j');
 $bst->put($j, 52);
 
 echo "length: {$bst->length()}\n";
-echo "m: {$bst->get($m)->getValue()}\n";
-echo "a: {$bst->get($a)->getValue()}\n";
-echo "a: {$bst->get($a)->getRight()->getRight()->getKey()->getKey()}\n";
-echo "a length: {$bst->get($a)->getLength()}\n";
-echo "x: {$bst->get($x)->getValue()}\n";
-echo "x length: {$bst->get($x)->getLength()}\n";
-echo "c: {$bst->get($c)->getValue()}\n";
-echo "z: {$bst->get($z)->getValue()}\n";
-echo "min: {$bst->min()->getValue()}\n";
-echo "max: {$bst->max()->getValue()}\n";
+//echo "m: {$bst->get($m)->getValue()}\n";
+//echo "a: {$bst->get($a)->getValue()}\n";
+//echo "a: {$bst->get($a)->getRight()->getRight()->getKey()->getKey()}\n";
+//echo "a length: {$bst->get($a)->getLength()}\n";
+//echo "x: {$bst->get($x)->getValue()}\n";
+//echo "x length: {$bst->get($x)->getLength()}\n";
+//echo "c: {$bst->get($c)->getValue()}\n";
+//echo "z: {$bst->get($z)->getValue()}\n";
+//echo "min: {$bst->min()->getValue()}\n";
+//echo "max: {$bst->max()->getValue()}\n";
+//
+//$b = new Key('b');
+//echo "floor b: {$bst->floor($b)->getKey()->getKey()}\n";
+//$y = new Key('y');
+//echo "ceil y: {$bst->ceil($y)->getKey()->getKey()}\n";
+//
+//$k = new Key('k');
+//echo "floor k: {$bst->ceil($k)->getKey()->getKey()}\n";
+//
+//echo "select : {$bst->select(5)->getKey()->getKey()}\n";
+echo "indexOf : {$bst->indexOf(new Key('z'))}\n";
 
-$b = new Key('b');
-echo "floor b: {$bst->floor($b)->getKey()->getKey()}\n";
-$y = new Key('y');
-echo "ceil y: {$bst->ceil($y)->getKey()->getKey()}\n";
-
-$k = new Key('k');
-echo "floor k: {$bst->ceil($k)->getKey()->getKey()}\n";
-
-echo "select : {$bst->select(5)->getKey()->getKey()}\n";
-echo "indexOf : {$bst->indexOf($z)}\n";
-
-$bst->deleteMin();
-echo "select : {$bst->select(0)->getKey()->getKey()}\n";
-echo "length: {$bst->length()}\n";
+//$bst->deleteMin();
+//echo "select : {$bst->select(0)->getKey()->getKey()}\n";
+//echo "length: {$bst->length()}\n";
