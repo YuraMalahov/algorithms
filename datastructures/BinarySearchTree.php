@@ -263,9 +263,9 @@ class BinarySearchTree
     /**
      * Get node by key
      * @param KeyInterface $key
-     * @return Node
+     * @return Node|null
      */
-    public function get(KeyInterface $key): Node
+    public function get(KeyInterface $key)
     {
         return $this->_get($this->root, $key);
     }
@@ -361,6 +361,20 @@ class BinarySearchTree
     public function delete(KeyInterface $key)
     {
         $this->root = $this->_delete($this->root, $key);
+    }
+
+    /**
+     * Collect nodes into array in range
+     * @param Key $lo
+     * @param Key $hi
+     * @return array
+     */
+    public function range(Key $lo, Key $hi): array
+    {
+        $array = [];
+        $this->_range($this->root, $array, $lo, $hi);
+
+        return $array;
     }
 
     /**
@@ -622,6 +636,31 @@ class BinarySearchTree
 
         return $node;
     }
+
+    /**
+     * @param Node $node
+     * @param array $array
+     * @param Key $lo
+     * @param Key $hi
+     */
+    private function _range(Node $node, array &$array, Key $lo, Key $hi)
+    {
+        if (!$node->getLength()) {
+            return;
+        }
+
+        $cmpLo = $node->getKey()->compare($lo);
+        $cmpHi = $node->getKey()->compare($hi);
+        if ($cmpLo > 0) {
+            $this->_range($node->getLeft(), $array, $lo, $hi);
+        }
+        if ($cmpLo >= 0 && $cmpHi <= 0) {
+            $array[] = $node;
+        }
+        if ($cmpHi < 0) {
+            $this->_range($node->getRight(), $array, $lo, $hi);
+        }
+    }
 }
 
 $m = new Key('m');
@@ -659,8 +698,23 @@ echo "length: {$bst->length()}\n";
 //echo "floor k: {$bst->ceil($k)->getKey()->getKey()}\n";
 //
 //echo "select : {$bst->select(5)->getKey()->getKey()}\n";
-echo "indexOf : {$bst->indexOf(new Key('z'))}\n";
+//echo "indexOf : {$bst->indexOf(new Key('z'))}\n";
 
 //$bst->deleteMin();
 //echo "select : {$bst->select(0)->getKey()->getKey()}\n";
 //echo "length: {$bst->length()}\n";
+
+//$bst->delete($a);
+//echo "delete a: {$bst->get($a)}\n";
+//echo "length: {$bst->length()}\n";
+//echo "m -> j: {$bst->get($m)->getLeft()->getRight()->getKey()->getKey()}\n";
+
+
+//echo "select : {$bst->select(0)->getKey()->getKey()}\n";
+//echo "select : {$bst->select(1)->getKey()->getKey()}\n";
+//echo "select : {$bst->select(2)->getKey()->getKey()}\n";
+//echo "select : {$bst->select(3)->getKey()->getKey()}\n";
+//echo "select : {$bst->select(4)->getKey()->getKey()}\n";
+//echo "select : {$bst->select(5)->getKey()->getKey()}\n";
+
+//var_dump( $bst->range($c, $x));
