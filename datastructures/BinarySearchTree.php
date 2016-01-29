@@ -551,7 +551,7 @@ class BinarySearchTree
     }
 
     /**
-     * Delete min node in sub tree
+     * Delete min node in sub tree. Returns node from which we start
      * @param Node $node
      * @return Node
      */
@@ -567,7 +567,7 @@ class BinarySearchTree
     }
 
     /**
-     * Delete max node in sub tree
+     * Delete max node in sub tree. Returns node from which we start
      * @param Node $node
      * @return Node
      */
@@ -583,7 +583,7 @@ class BinarySearchTree
     }
 
     /**
-     * Delete node by key in sub tree
+     * Delete node by key in sub tree. Returns node from which we start
      * @param Node $node
      * @param KeyInterface $key
      * @return Node
@@ -614,7 +614,7 @@ class BinarySearchTree
             $tmp = $node;
             // get min node in right branch
             $node = $this->_min($tmp->getRight());
-            // unset min node in tree and set right link in min node with right branch of deleted node
+            // delete min node in tree and set right link in min node with right branch of deleted node
             $node->setRight($this->_deleteMin($tmp->getRight()));
             // set left link in min node with left branch of deleted node
             $node->setLeft($tmp->getLeft());
