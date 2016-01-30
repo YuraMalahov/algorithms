@@ -2,9 +2,6 @@
 
 var a = [2,3,1,5,9,4,0,8,6,7];
 
-var checkCount = 0,
-    replaceCount = 0;
-
 function sort(array, lowest, higest) {
     if (higest <= lowest) {
         return;
@@ -39,9 +36,5 @@ function merge(array, lowest, middle, highest) {
     }
 }
 
-console.log(a);
 sort(a, 0, a.length - 1);
 console.log(a);
-
-console.log('checks', checkCount);
-console.log('replaces', replaceCount);

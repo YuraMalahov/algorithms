@@ -1,10 +1,5 @@
 "use strict";
 
-var a = [2,3,1,5,9,4,0,8,6,7];
-
-var checkCount = 0,
-    replaceCount = 0;
-
 function sort(array) {
     let count = array.length,
         step = 1,
@@ -21,20 +16,13 @@ function sort(array) {
                 let tmp = array[j];
                 array[j] = array[j - step];
                 array[j - step] = tmp;
-
-                // *** debug ***
-                replaceCount++;
-                checkCount++;
-                // *** debug ***
             }
         }
         step = Math.floor(step / 3);
     }
 }
 
-console.log(a);
+var a = [2,3,1,5,9,4,0,8,6,7];
+
 sort(a);
 console.log(a);
-
-console.log('checks', checkCount);
-console.log('replaces', replaceCount);

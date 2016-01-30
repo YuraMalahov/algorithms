@@ -1,10 +1,5 @@
 "use strict";
 
-var a = [2,3,1,5,9,4,0,8,6,7];
-
-var checkCount = 0,
-    replaceCount = 0;
-
 function sort(array) {
     for (let i = 0, count = array.length; i < count; i++) {
         let min = i,
@@ -12,19 +7,11 @@ function sort(array) {
             tmp;
 
         while (j < count) {
-            // *** debug ***
-            checkCount++;
-            // *** debug ***
-
             if (array[j] < array[min]) {
                 min = j;
             }
             j++
         }
-
-        // *** debug ***
-        replaceCount++;
-        // *** debug ***
 
         tmp = array[min];
         array[min] = array[i];
@@ -32,9 +19,7 @@ function sort(array) {
     }
 }
 
-console.log(a);
+var a = [2,3,1,5,9,4,0,8,6,7];
+
 sort(a);
 console.log(a);
-
-console.log('checks', checkCount);
-console.log('replaces', replaceCount);
