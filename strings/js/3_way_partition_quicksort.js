@@ -1,24 +1,7 @@
 "use strict";
 
-var a = [
-        'AGX',
-        '39',
-        '1',
-        'NCQ0',
-        'X4',
-        'ZZ8',
-        'NB67R',
-        'DUMRNJ',
-        'HIGQ',
-        '5UTT',
-        'NCQ0',
-        'OXIX5',
-        'Z00',
-        '5UTT',
-        '27QEW',
-        'Z00',
-        '0P',
-        'HIGQ'
+var a = ['AGX', '39', '1', 'NCQ0', 'X4', 'ZZ8', 'NB67R', 'DUMRNJ', 'HIGQ',
+        '5UTT', 'NCQ0', 'OXIX5', 'Z00', '5UTT', '27QEW', 'Z00', '0P', 'HIGQ'
     ],
     aux = [],
     N = a.length;

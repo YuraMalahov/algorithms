@@ -1,255 +1,10 @@
 <?php
 
-namespace RBT;
-
-
-/**
- * Interface KeyInterface
- * @package BST
- */
-interface KeyInterface
-{
-    function getKey();
-
-    function getVal(): int;
-
-    function compare(KeyInterface $key): int;
-}
-
-/**
- * Class Key
- * @package BST
- */
-class Key implements KeyInterface
-{
-    /**
-     * @var string
-     */
-    private $key;
-
-    /**
-     * Key value
-     * @var int
-     */
-    private $val;
-
-    public function __construct(string $key = '')
-    {
-        $this->key = $key;
-        // compute key value
-        $this->val = array_reduce(str_split($key), function($res, $a) {
-            return $res + ord($a);
-        }, 0);
-    }
-
-    /**
-     * Get key
-     */
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
-    /**
-     * Get key value
-     */
-    public function getVal(): int
-    {
-        return $this->val;
-    }
-
-    public function compare(KeyInterface $key): int
-    {
-        return $this->val <=> $key->getVal();
-    }
-}
-
-/**
- * Class Node
- * @package BST
- */
-class Node
-{
-    /**
-     * Red link
-     */
-    const RED = true;
-
-    /**
-     * Black link
-     */
-    const BLACK = false;
-
-    /**
-     * @var Key
-     */
-    private $key;
-
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    /**
-     * Left link
-     * @var null|Node
-     */
-    private $left = null;
-
-    /**
-     * Right link
-     * @var null|Node
-     */
-    private $right = null;
-
-    /**
-     * Node length
-     * @var int
-     */
-    private $length = 0;
-
-    /**
-     * Node color
-     * @var bool
-     */
-    private $color = false;
-
-    /**
-     * Node constructor.
-     * @param KeyInterface $key
-     * @param mixed $value
-     * @param $color
-     */
-    public function __construct(KeyInterface $key, $value, bool $color = false)
-    {
-        $this->key = $key;
-        $this->value = $value;
-        $this->length = $key->getVal() ? 1 : 0;
-        $this->color = $color;
-    }
-
-    /**
-     * Get key
-     * @return KeyInterface
-     */
-    public function getKey(): KeyInterface
-    {
-        return $this->key;
-    }
-
-    /**
-     * Set key
-     * @param KeyInterface $key
-     */
-    public function setKey(KeyInterface $key)
-    {
-        $this->key = $key;
-    }
-
-    /**
-     * Get value
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    public function setValue($value)
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * Get left link
-     * @return Node
-     */
-    public function getLeft(): Node
-    {
-        if ($this->left === null) {
-            $class = self::class;
-            $this->left = new $class(new Key(), null);
-        }
-
-        return $this->left;
-    }
-
-    /**
-     * Set left link
-     * @param Node $left
-     */
-    public function setLeft(Node $left)
-    {
-        $this->left = $left;
-        $this->updateLength();
-    }
-
-    /**
-     * Get right link
-     * @return Node
-     */
-    public function getRight(): Node
-    {
-        if ($this->right === null) {
-            $class = self::class;
-            $this->right = new $class(new Key(), null);
-        }
-
-        return $this->right;
-    }
-
-    /**
-     * Set right link
-     * @param Node $right
-     */
-    public function setRight(Node $right)
-    {
-        $this->right = $right;
-        $this->updateLength();
-    }
-
-    /**
-     * Get node length
-     */
-    public function getLength(): int
-    {
-        return $this->length;
-    }
-
-    /**
-     * Check if node is red
-     */
-    public function isRed(): bool
-    {
-        return $this->color === self::RED;
-    }
-
-    public function getColor(): bool
-    {
-        return $this->color;
-    }
-
-    /**
-     * @param $color
-     */
-    public function setColor(bool $color)
-    {
-        $this->color = $color;
-    }
-
-    /**
-     * Update node length
-     */
-    private function updateLength()
-    {
-        $this->length = $this->getLeft()->getLength() + $this->getRight()->getLength() + 1;
-    }
-}
-
+namespace Tree;
 
 /**
  * Class BinarySearchTree
- * @package BST
+ * @package Tree
  */
 class BinarySearchTree
 {
@@ -337,7 +92,7 @@ class BinarySearchTree
 
     /**
      * Get node by index in current tree
-     * @param $i
+     * @param int $i
      * @return Node
      */
     public function select(int $i): Node
@@ -678,27 +433,20 @@ class BinarySearchTree
             $this->_range($node->getRight(), $array, $lo, $hi);
         }
     }
-
-
-    private function rotateLeft(Node $node): Node
-    {
-        $tmp = $node->getRight();
-        $node->setRight($tmp->getLeft());
-        $tmp->setLeft($node);
-        $tmp->setColor($node->getColor());
-        $node->setColor(Node::RED);
-
-        return $tmp;
-    }
-
-    private function rotateRight(Node $node): Node
-    {
-        $tmp = $node->getLeft();
-        $node->setLeft($tmp->getRight());
-        $tmp->setRight($node);
-        $tmp->setColor($node->getColor());
-        $node->setColor(Node::RED);
-
-        return $tmp;
-    }
 }
+
+$m = new Key('m');
+$bst = new BinarySearchTree(new Node($m, 23));
+
+$a = new Key('a');
+$bst->put($a, 99);
+$x = new Key('x');
+$bst->put($x, 88);
+$c = new Key('c');
+$bst->put($c, 77);
+$z = new Key('z');
+$bst->put($z, 66);
+$j = new Key('j');
+$bst->put($j, 52);
+
+echo "length: {$bst->length()}\n";

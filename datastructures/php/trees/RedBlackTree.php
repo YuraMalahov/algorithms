@@ -1,240 +1,12 @@
 <?php
 
-namespace BST;
+namespace Tree;
 
 /**
- * Interface KeyInterface
- * @package BST
+ * Class RedBlackTree
+ * @package Tree
  */
-interface KeyInterface
-{
-    /**
-     * @return mixed
-     */
-    function getKey();
-
-    /**
-     * @return int
-     */
-    function getVal(): int;
-
-    /**
-     * @param KeyInterface $key
-     * @return int
-     */
-    function compare(KeyInterface $key): int;
-}
-
-/**
- * Class Key
- * @package BST
- */
-class Key implements KeyInterface
-{
-    /**
-     * @var string
-     */
-    private $key;
-
-    /**
-     * Key value
-     * @var int
-     */
-    private $val;
-
-    /**
-     * Key constructor.
-     * @param string|string $key
-     */
-    public function __construct(string $key = '')
-    {
-        $this->key = $key;
-        // compute key value
-        $this->val = array_reduce(str_split($key), function($res, $a) {
-            return $res + ord($a);
-        }, 0);
-    }
-
-    /**
-     * Get key
-     * @return string
-     */
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
-    /**
-     * Get key value
-     * @return int
-     */
-    public function getVal(): int
-    {
-        return $this->val;
-    }
-
-
-    /**
-     * Compare two keys. return "0" if they are equal, "1" if current key is bigger or "-1" if current key is smaller
-     * @param Key $key
-     * @return int
-     */
-    public function compare(KeyInterface $key): int
-    {
-        return $this->val <=> $key->getVal();
-    }
-}
-
-/**
- * Class Node
- * @package BST
- */
-class Node
-{
-    /**
-     * @var Key
-     */
-    private $key;
-
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    /**
-     * Left link
-     * @var null|Node
-     */
-    private $left = null;
-
-    /**
-     * Right link
-     * @var null|Node
-     */
-    private $right = null;
-
-    /**
-     * Node length
-     * @var int
-     */
-    private $length = 0;
-
-    /**
-     * Node constructor.
-     * @param KeyInterface $key
-     * @param mixed $value
-     */
-    public function __construct(KeyInterface $key, $value)
-    {
-        $this->key = $key;
-        $this->value = $value;
-        $this->length = $key->getVal() ? 1 : 0;
-    }
-
-    /**
-     * Get key
-     * @return KeyInterface
-     */
-    public function getKey(): KeyInterface
-    {
-        return $this->key;
-    }
-
-    /**
-     * Set key
-     * @param KeyInterface $key
-     */
-    public function setKey(KeyInterface $key)
-    {
-        $this->key = $key;
-    }
-
-    /**
-     * Get value
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    public function setValue($value)
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * Get left link
-     * @return Node
-     */
-    public function getLeft(): Node
-    {
-        if ($this->left === null) {
-            $class = self::class;
-            $this->left = new $class(new Key(), null);
-        }
-
-        return $this->left;
-    }
-
-    /**
-     * Set left link
-     * @param Node $left
-     */
-    public function setLeft(Node $left)
-    {
-        $this->left = $left;
-        $this->updateLength();
-    }
-
-    /**
-     * Get right link
-     * @return Node
-     */
-    public function getRight(): Node
-    {
-        if ($this->right === null) {
-            $class = self::class;
-            $this->right = new $class(new Key(), null);
-        }
-
-        return $this->right;
-    }
-
-    /**
-     * Set right link
-     * @param Node $right
-     */
-    public function setRight(Node $right)
-    {
-        $this->right = $right;
-        $this->updateLength();
-    }
-
-    /**
-     * Get node length
-     * @return int
-     */
-    public function getLength(): int
-    {
-        return $this->length;
-    }
-
-    /**
-     * Update node length
-     */
-    private function updateLength()
-    {
-        $this->length = $this->getLeft()->getLength() +
-            $this->getRight()->getLength() + 1;
-    }
-}
-
-/**
- * Class BinarySearchTree
- * @package BST
- */
-class BinarySearchTree
+class RedBlackTree
 {
     /**
      * Root node
@@ -278,6 +50,7 @@ class BinarySearchTree
     public function put(KeyInterface $key, $value)
     {
         $this->root = $this->_put($this->root, $key, $value);
+        $this->root->setColor(Node::BLACK);
     }
 
     /**
@@ -320,7 +93,7 @@ class BinarySearchTree
 
     /**
      * Get node by index in current tree
-     * @param int $i
+     * @param $i
      * @return Node
      */
     public function select(int $i): Node
@@ -343,7 +116,7 @@ class BinarySearchTree
      */
     public function deleteMin()
     {
-        $this->root = $this->_deleteMin($this->root);
+        $this->deleteTemplate('_deleteMin', new Key(''));
     }
 
     /**
@@ -351,7 +124,7 @@ class BinarySearchTree
      */
     public function deleteMax()
     {
-        $this->root = $this->_deleteMax($this->root);
+        $this->deleteTemplate('_deleteMax', new Key(''));
     }
 
     /**
@@ -360,7 +133,7 @@ class BinarySearchTree
      */
     public function delete(KeyInterface $key)
     {
-        $this->root = $this->_delete($this->root, $key);
+        $this->deleteTemplate('delete', $key);
     }
 
     /**
@@ -409,7 +182,7 @@ class BinarySearchTree
     private function _put(Node $node, KeyInterface $key, $value)
     {
         if (!$node->getLength()) {
-            return new Node($key, $value);
+            return new Node($key, $value, NODE::RED);
         }
 
         $cmp = $node->getKey()->compare($key);
@@ -419,6 +192,16 @@ class BinarySearchTree
             $node->setRight($this->_put($node->getRight(), $key, $value));
         } else {
             $node->setValue($value);
+        }
+
+        if ($node->getRight()->isRed() && !$node->getLeft()->isRed()) {
+            $node = $this->rotateLeft($node);
+        }
+        if ($node->getLeft()->isRed() && $node->getLeft()->getLeft()->isRed()) {
+            $node = $this->rotateRight($node);
+        }
+        if ($node->getLeft()->isRed() && $node->getRight()->isRed()) {
+            $this->flipColors($node);
         }
 
         return $node;
@@ -564,6 +347,23 @@ class BinarySearchTree
         return $node->getLength() - 1 - $node->getRight()->getLength();
     }
 
+    private function deleteTemplate(string $method, KeyInterface $key)
+    {
+        if (!$this->root->getLeft()->isRed() && !$this->root->getRight()->isRed()) {
+            $this->root->setColor(Node::RED);
+        }
+
+        if ($key->getVal()) {
+            $this->root = $this->$method($this->root, $key);
+        } else {
+            $this->root = $this->$method($this->root);
+        }
+
+        if (!$this->root->isEmpty()) {
+            $this->root->setColor(Node::BLACK);
+        }
+    }
+
     /**
      * Delete min node in sub tree. Returns node from which we start
      * @param Node $node
@@ -572,12 +372,16 @@ class BinarySearchTree
     private function _deleteMin(Node $node): Node
     {
         if (!$node->getLeft()->getLength()) {
-            // set left link in previous node with right link of min node
-            return $node->getRight();
+            // set left link in previous node with null node
+            return $node->getLeft();
+        }
+        if (!$node->getLeft()->isRed() && !$node->getLeft()->getLeft()->isRed()) {
+            $node = $this->moveRedLeft($node);
         }
 
         $node->setLeft($this->_deleteMin($node->getLeft()));
-        return $node;
+
+        return $this->balance($node);
     }
 
     /**
@@ -587,13 +391,20 @@ class BinarySearchTree
      */
     private function _deleteMax(Node $node): Node
     {
+        if ($node->getLeft()->isRed()) {
+            $node = $this->rotateRight($node);
+        }
         if (!$node->getRight()->getLength()) {
-            // set right link in previous node with left link of max node
-            return $node->getLeft();
+            // set right link in previous node with null node
+            return $node->getRight();
+        }
+        if (!$node->getRight()->isRed() && !$node->getRight()->getLeft()->isRed()) {
+            $node = $this->moveRedRight($node);
         }
 
         $node->setRight($this->_deleteMax($node->getRight()));
-        return $node;
+
+        return $this->balance($node);
     }
 
     /**
@@ -604,37 +415,33 @@ class BinarySearchTree
      */
     private function _delete(Node $node, KeyInterface $key): Node
     {
-        if (!$node->getLength()) {
-            return new Node(new Key(''), null);
-        }
-
-        $cmp = $node->getKey()->compare($key);
-        if ($cmp > 0) {
-            $node->setLeft($this->_delete($node->getLeft(), $key));
-        } else if ($cmp < 0) {
-            $node->setRight($this->_delete($node->getRight(), $key));
-        } else {
-            if (!$node->getRight()->getLength()) {
-                // if node have empty right link replace it with his left link
-                return $node->getLeft();
+        // TODO: check
+        if ($node->getKey()->compare($key) > 0) {
+            if (!$node->getLeft()->isRed() && !$node->getLeft()->getLeft()->isRed()) {
+                $node = $this->moveRedLeft($node);
             }
-
-            if (!$node->getLeft()->getLength()) {
-                // if node have empty left link replace it with his right link
+            $node->setLeft($this->_delete($node->getLeft(), $key));
+        } else {
+            if ($node->getLeft()->isRed()) {
+                $node = $this->rotateRight($node);
+            }
+            if ($node->getKey()->compare($key) === 0 && !$node->getRight()->getLength()) {
                 return $node->getRight();
             }
-
-            // save link
-            $tmp = $node;
-            // get min node in right branch
-            $node = $this->_min($tmp->getRight());
-            // delete min node in tree and set right link in min node with right branch of deleted node
-            $node->setRight($this->_deleteMin($tmp->getRight()));
-            // set left link in min node with left branch of deleted node
-            $node->setLeft($tmp->getLeft());
+            if (!$node->getRight()->isRed() && !$node->getRight()->getLeft()->isRed()) {
+                $node = $this->moveRedRight($node);
+            }
+            if ($node->getKey()->compare($key) === 0) {
+                $minKey = $this->_min($node->getRight())->getKey();
+                $node->setValue($this->_get($node->getRight(), $minKey));
+                $node->setKey($minKey);
+                $node->setRight($this->_deleteMin($node->getRight()));
+            } else {
+                $node->setRight($this->_delete($node->getRight(), $key));
+            }
         }
 
-        return $node;
+        return $this->balance($node);
     }
 
     /**
@@ -661,20 +468,68 @@ class BinarySearchTree
             $this->_range($node->getRight(), $array, $lo, $hi);
         }
     }
+
+
+    private function rotateLeft(Node $node): Node
+    {
+        $tmp = $node->getRight();
+        $node->setRight($tmp->getLeft());
+        $tmp->setLeft($node);
+        $tmp->setColor($node->getColor());
+        $node->setColor(Node::RED);
+
+        return $tmp;
+    }
+
+    private function rotateRight(Node $node): Node
+    {
+        $tmp = $node->getLeft();
+        $node->setLeft($tmp->getRight());
+        $tmp->setRight($node);
+        $tmp->setColor($node->getColor());
+        $node->setColor(Node::RED);
+
+        return $tmp;
+    }
+
+    private function flipColors(Node $node)
+    {
+        $node->setColor(Node::RED);
+        $node->getLeft()->setColor(Node::BLACK);
+        $node->getRight()->setColor(Node::BLACK);
+    }
+
+    private function moveRedLeft(Node $node): Node
+    {
+        // if $node is red and bough links $node->left and $node->left->left are black
+        // than paint $node->left in red or one of his child
+        $this->flipColors($node);
+        if ($node->getRight()->getLeft()->isRed()) {
+            $node->setRight($this->rotateRight($node->getRight()));
+            return $this->rotateLeft($node);
+        }
+
+        return $node;
+    }
+
+    private function moveRedRight(Node $node): Node
+    {
+        // if $node is red and bough links $node->right and $node->right->left are black
+        // than paint $node->right in red or one of his child
+        $this->flipColors($node);
+        if (!$node->getLeft()->getLeft()->isRed()) {
+            return $this->rotateRight($node);
+        }
+
+        return $node;
+    }
+
+    private function balance(Node $node): Node
+    {
+        if ($node->getRight()->isRed()) {
+            return $this->rotateLeft($node);
+        }
+
+        return $node;
+    }
 }
-
-$m = new Key('m');
-$bst = new BinarySearchTree(new Node($m, 23));
-
-$a = new Key('a');
-$bst->put($a, 99);
-$x = new Key('x');
-$bst->put($x, 88);
-$c = new Key('c');
-$bst->put($c, 77);
-$z = new Key('z');
-$bst->put($z, 66);
-$j = new Key('j');
-$bst->put($j, 52);
-
-echo "length: {$bst->length()}\n";

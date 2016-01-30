@@ -6,23 +6,13 @@ function countSort(&$list) {
     $hash = [];
     $res = [];
 
-    // debug
-    $debug = 0;
-
     foreach ($list as $key => $val) {
         $hash[$val][] = $val;
-
-        // debug
-        $debug++;
     }
 
     for ($i = 0; $i < count($list); $i++) {
-        // debug
-        $debug++;
         if (count($hash[$i]) > 1) {
             foreach ($hash[$i] as $element) {
-                // debug
-                $debug++;
                 $res[] = $element;
             }
         } else {
@@ -31,14 +21,6 @@ function countSort(&$list) {
     }
 
     $list = $res;
-
-    return $debug;
 }
 
-$debug = countSort($list);
-
-echo "<h3>iterations $debug</h3>";
-
-echo '<pre>';
-var_dump($list);
-echo '</pre>';
+countSort($list);

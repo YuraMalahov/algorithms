@@ -1,16 +1,7 @@
 "use strict";
 
-var a = [
-    'AGXHK',
-    '39X7F',
-    'NCQ03',
-    'NB67R',
-    'DUMRN',
-    '5UATT',
-    'OXIX5',
-    'NAZ00',
-    '27QEW',
-    'HTIGQ'
+var a = ['AGXHK', '39X7F', 'NCQ03', 'NB67R', 'DUMRN', '5UATT', 'OXIX5', 'NAZ00',
+    '27QEW', 'HTIGQ'
 ],
     aux = [],
     R = 256,
