@@ -133,7 +133,7 @@ class RedBlackTree
      */
     public function delete(KeyInterface $key)
     {
-        $this->deleteTemplate('delete', $key);
+        $this->deleteTemplate('_delete', $key);
     }
 
     /**
