@@ -116,7 +116,15 @@ class RedBlackTree
      */
     public function deleteMin()
     {
-        $this->deleteTemplate('_deleteMin', new Key(''));
+        if (!$this->root->getLeft()->isRed() && !$this->root->getRight()->isRed()) {
+            $this->root->setColor(Node::RED);
+        }
+
+        $this->_deleteMin($this->root);
+
+        if (!$this->root->isEmpty()) {
+            $this->root->setColor(Node::BLACK);
+        }
     }
 
     /**
@@ -124,7 +132,15 @@ class RedBlackTree
      */
     public function deleteMax()
     {
-        $this->deleteTemplate('_deleteMax', new Key(''));
+        if (!$this->root->getLeft()->isRed() && !$this->root->getRight()->isRed()) {
+            $this->root->setColor(Node::RED);
+        }
+
+        $this->_deleteMax($this->root);
+
+        if (!$this->root->isEmpty()) {
+            $this->root->setColor(Node::BLACK);
+        }
     }
 
     /**
@@ -133,7 +149,15 @@ class RedBlackTree
      */
     public function delete(KeyInterface $key)
     {
-        $this->deleteTemplate('delete', $key);
+        if (!$this->root->getLeft()->isRed() && !$this->root->getRight()->isRed()) {
+            $this->root->setColor(Node::RED);
+        }
+
+        $this->_delete($this->root, $key);
+
+        if (!$this->root->isEmpty()) {
+            $this->root->setColor(Node::BLACK);
+        }
     }
 
     /**
@@ -345,23 +369,6 @@ class RedBlackTree
 
         // subtract from node length "-1" to indexing from "0" and right branch length
         return $node->getLength() - 1 - $node->getRight()->getLength();
-    }
-
-    private function deleteTemplate(string $method, KeyInterface $key)
-    {
-        if (!$this->root->getLeft()->isRed() && !$this->root->getRight()->isRed()) {
-            $this->root->setColor(Node::RED);
-        }
-
-        if ($key->getVal()) {
-            $this->root = $this->$method($this->root, $key);
-        } else {
-            $this->root = $this->$method($this->root);
-        }
-
-        if (!$this->root->isEmpty()) {
-            $this->root->setColor(Node::BLACK);
-        }
     }
 
     /**

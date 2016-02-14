@@ -1,79 +1,77 @@
 <?php
 
+namespace DataStructures;
+
+use Iterator;
+
 /**
  * Class Bag
+ * @package DataStructures
  */
-class Bag
+class Bag implements BaseStructureInterface, Iterator
 {
     /**
-     * @var Item
+     * @var NodeInterface
      */
-    private $item = null;
+    private $first = null;
 
     /**
-     * @var Item
+     * @var NodeInterface
      */
     private $current = null;
 
     /**
-     * @var int
+     * @var NodeInterface
      */
+    private $last = null;
+
     private $length = 0;
 
-    /**
-     * Add into bag
-     *
-     * @param $value
-     */
-    public function add($value)
+    public function add(NodeInterface $node)
     {
-        $item = new Item($value);
         $this->length++;
 
-        if (!$this->item) {
-            $this->item = $item;
+        if (!$this->first) {
+            $this->first = $node;
+            $this->current = $node;
+            $this->last = $node;
         } else {
-            $item->setNext($this->item);
-            $this->item = $item;
+            $this->last->setRight($node);
+            $this->last = $node;
         }
     }
 
-    /**
-     * Bag items count
-     *
-     * @return int
-     */
     public function length(): int
     {
         return $this->length;
     }
 
-    /**
-     * Next bag item
-     *
-     * @return mixed
-     */
-    public function next()
+    public function rewind()
     {
-        if (!$this->current) {
-            $this->current = $this->item;
-            return $this->current->value();
-        }
+        $this->current = $this->first;
+    }
 
-        if (!$this->current->hasNext()) {
+    public function current()
+    {
+        return $this->current;
+    }
+
+    public function key()
+    {
+        if (!$this->valid()) {
             return null;
         }
 
-        $this->current = $this->current->next();
-
-        return $this->current->value();
+        return $this->current->getItem()->getKey();
     }
 
-    /**
-     * Reset bag iteration
-     */
-    public function reset()
+    public function next()
     {
-        $this->current = null;
+        $this->current = $this->current->getRight();
+    }
+
+    public function valid()
+    {
+        return isset($this->current);
     }
 }

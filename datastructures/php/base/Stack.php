@@ -1,68 +1,60 @@
 <?php
 
-/**
- * Class Stack
- */
-class Stack
+namespace DataStructures;
+
+use Iterator;
+
+class Stack implements BaseStructureInterface, Iterator
 {
-    /**
-     * @var int
-     */
     private $length = 0;
 
     /**
-     * @var Item
+     * @var NodeInterface
      */
     private $current = null;
 
-    /**
-     * Add item into stack
-     *
-     * @param $value
-     */
-    public function add($value)
+
+    public function add(NodeInterface $node)
     {
-        $item = new Item($value);
         $this->length++;
 
         if (!$this->current) {
-            $this->current = $item;
+            $this->current = $node;
         } else {
-            $item->setNext($this->current);
-            $this->current = $item;
+            $node->setRight($this->current);
+            $this->current = $node;
         }
     }
 
-    /**
-     * Get next item from stack
-     *
-     * @return mixed|null
-     */
-    public function next()
-    {
-        if (!$this->current) {
-            return null;
-        }
-
-        $this->length--;
-        $current = $this->current;
-
-        if (!$this->current->hasNext()) {
-            $this->current = null;
-        } else {
-            $this->current = $this->current->next();
-        }
-
-        return $current->value();
-    }
-
-    /**
-     * Get stack length
-     *
-     * @return int
-     */
     public function length(): int
     {
         return $this->length;
+    }
+
+    public function rewind() {}
+
+    public function current()
+    {
+        return $this->current;
+    }
+
+    public function key()
+    {
+        if (!$this->valid()) {
+            return null;
+        }
+
+        return $this->current->getItem()->getKey();
+    }
+
+    public function next()
+    {
+        $this->length--;
+        $this->current = $this->current->getRight();
+    }
+
+    public function valid()
+    {
+        return isset($this->current);
     }
 }

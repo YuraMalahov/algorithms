@@ -1,66 +1,48 @@
 <?php
 
-/**
- * Class Item
- */
-class Item
+namespace DataStructures;
+
+class Item implements ItemInterface, HashInterface, CompareInterface
 {
-    /**
-     * @var mixed
-     */
+    const DIVIDER = 512;
+
+    private $key = null;
+
     private $value = null;
 
-    /**
-     * @var Item
-     */
-    private $next = null;
+    private $hashCode = null;
 
-    /**
-     * Item constructor.
-     * @param mixed $value
-     */
-    public function __construct($value)
+    public function __construct(string $key, $value)
     {
+        $this->key = $key;
         $this->value = $value;
+        $this->hashCode = $this->createHashCode($key) % self::DIVIDER;
     }
 
-    /**
-     * Get item value
-     *
-     * @return mixed
-     */
-    public function value()
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    public function getValue()
     {
         return $this->value;
     }
 
-    /**
-     * Set link to next item
-     *
-     * @param Item $item
-     */
-    public function setNext(Item $item)
+    public function getHashCode(): int
     {
-        $this->next = $item;
+        return $this->hashCode;
     }
 
-    /**
-     * Get next item
-     *
-     * @return Item
-     */
-    public function next(): Item
+    public function compare(CompareInterface $item): int
     {
-        return $this->next;
+        return $this->value <=> $item->getValue();
     }
 
-    /**
-     * Check if has link to next item
-     *
-     * @return bool
-     */
-    public function hasNext(): bool
+    private function createHashCode(string $key): int
     {
-        return isset($this->next);
+        return array_reduce(str_split($key), function ($prev, $current) {
+            return $prev + ord($current);
+        }, 0);
     }
 }

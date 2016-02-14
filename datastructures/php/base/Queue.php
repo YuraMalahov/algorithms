@@ -1,9 +1,10 @@
 <?php
 
-/**
- * Class Queue
- */
-class Queue
+namespace DataStructures;
+
+use Iterator;
+
+class Queue implements BaseStructureInterface, Iterator
 {
     /**
      * @var int
@@ -11,64 +12,62 @@ class Queue
     private $length = 0;
 
     /**
-     * @var Item
+     * @var NodeInterface
      */
     private $current = null;
 
     /**
-     * @var Item
+     * @var NodeInterface
      */
     private $last = null;
 
-    /**
-     * Add item into queue
-     *
-     * @param $value
-     */
-    public function add($value)
+
+    public function add(NodeInterface $node)
     {
-        $item = new Item($value);
         $this->length++;
 
         if (!$this->current) {
-            $this->current = $item;
-            $this->last = $item;
+            $this->current = $node;
+            $this->last = $node;
         } else {
-            $this->last->setNext($item);
-            $this->last = $item;
+            $this->last->setRight($node);
+            $this->last = $node;
         }
     }
 
-    /**
-     * Get next item from queue
-     *
-     * @return mixed|null
-     */
-    public function next()
-    {
-        if (!$this->current) {
-            return null;
-        }
-
-        $this->length--;
-        $current = $this->current;
-
-        if (!$this->current->hasNext()) {
-            $this->current = null;
-        } else {
-            $this->current = $this->current->next();
-        }
-
-        return $current->value();
-    }
-
-    /**
-     * Get queue length
-     *
-     * @return int
-     */
     public function length(): int
     {
         return $this->length;
+    }
+
+    public function rewind() {}
+
+    public function current()
+    {
+        return $this->current;
+    }
+
+    public function key()
+    {
+        if (!$this->valid()) {
+            return null;
+        }
+
+        return $this->current->getItem()->getKey();
+    }
+
+    public function next()
+    {
+        if (!$this->valid()) {
+            $this->last = null;
+        }
+
+        $this->length--;
+        $this->current = $this->current->getRight();
+    }
+
+    public function valid()
+    {
+        return isset($this->current);
     }
 }
