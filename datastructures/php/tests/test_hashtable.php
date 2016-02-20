@@ -1,12 +1,11 @@
 <?php
 
-use DataStructures\HashTable;
+use Base\HashTable;
 
 spl_autoload_register(function ($class) {
-    $tmp = explode('\\', $class);
-    $file = $tmp[count($tmp)-1];
+    $file = str_replace('\\', '/', $class);
 
-    require "$file.php";
+    require "../$file.php";
 });
 
 
@@ -20,4 +19,4 @@ $t->set('B', 2);
 $t->set('C', 3);
 $t->set('c', 103);
 
-echo $t->get('H2');
+echo $t->get('C');

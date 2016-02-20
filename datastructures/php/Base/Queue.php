@@ -1,29 +1,35 @@
 <?php
 
-namespace DataStructures;
+namespace Base;
 
 use Iterator;
+use Node\NodeInterface;
 
-class Queue implements BaseStructureInterface, Iterator
+/**
+ * Class Queue
+ * @package Base
+ */
+class Queue extends AbstractBaseStructure implements Iterator
 {
     /**
-     * @var int
-     */
-    private $length = 0;
-
-    /**
-     * @var NodeInterface
+     * @var null|NodeInterface
      */
     private $current = null;
 
     /**
-     * @var NodeInterface
+     * @var null|NodeInterface
      */
     private $last = null;
 
-
-    public function add(NodeInterface $node)
+    /**
+     * Add value
+     *
+     * @param $value
+     * @return mixed
+     */
+    public function add($value)
     {
+        $node = $this->nodeFactory->create($value);
         $this->length++;
 
         if (!$this->current) {
@@ -35,27 +41,34 @@ class Queue implements BaseStructureInterface, Iterator
         }
     }
 
-    public function length(): int
-    {
-        return $this->length;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function rewind() {}
 
+    /**
+     * @inheritdoc
+     */
     public function current()
     {
-        return $this->current;
+        return $this->current->getItem();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function key()
     {
         if (!$this->valid()) {
             return null;
         }
 
-        return $this->current->getItem()->getKey();
+        return $this->current->getItem();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function next()
     {
         if (!$this->valid()) {
@@ -66,6 +79,9 @@ class Queue implements BaseStructureInterface, Iterator
         $this->current = $this->current->getRight();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function valid()
     {
         return isset($this->current);

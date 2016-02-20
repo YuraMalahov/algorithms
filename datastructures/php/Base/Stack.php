@@ -1,21 +1,30 @@
 <?php
 
-namespace DataStructures;
+namespace Base;
 
 use Iterator;
+use Node\NodeInterface;
 
-class Stack implements BaseStructureInterface, Iterator
+/**
+ * Class Stack
+ * @package Base
+ */
+class Stack extends AbstractBaseStructure implements Iterator
 {
-    private $length = 0;
-
     /**
-     * @var NodeInterface
+     * @var null|NodeInterface
      */
     private $current = null;
 
-
-    public function add(NodeInterface $node)
+    /**
+     * Add value
+     *
+     * @param $value
+     * @return mixed
+     */
+    public function add($value)
     {
+        $node = $this->nodeFactory->create($value);
         $this->length++;
 
         if (!$this->current) {
@@ -26,33 +35,43 @@ class Stack implements BaseStructureInterface, Iterator
         }
     }
 
-    public function length(): int
-    {
-        return $this->length;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function rewind() {}
 
+    /**
+     * @inheritdoc
+     */
     public function current()
     {
-        return $this->current;
+        return $this->current->getItem();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function key()
     {
         if (!$this->valid()) {
             return null;
         }
 
-        return $this->current->getItem()->getKey();
+        return $this->current->getItem();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function next()
     {
         $this->length--;
         $this->current = $this->current->getRight();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function valid()
     {
         return isset($this->current);
