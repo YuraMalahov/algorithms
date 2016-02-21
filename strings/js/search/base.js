@@ -1,7 +1,7 @@
 "use strict";
 
-var str = 'abc',
-    text = 'sgsd dfabcsfdg';
+var str = 'ABC',
+    text = 'df AB ABC cg';
 
 function search(part, text) {
     let partLength = part.length,

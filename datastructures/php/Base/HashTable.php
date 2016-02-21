@@ -2,14 +2,13 @@
 
 namespace Base;
 
-use Iterator;
 use Item\ItemFactory;
 
 /**
  * Class HashTable
  * @package Base
  */
-class HashTable extends AbstractBaseStructure implements Iterator
+class HashTable extends AbstractBaseStructure
 {
     /**
      * @var Collection[]
@@ -25,8 +24,6 @@ class HashTable extends AbstractBaseStructure implements Iterator
      * @var CollectionFactory
      */
     private $collectionFactory;
-
-    private $currentKey;
 
     /**
      * HashTable constructor.
@@ -47,11 +44,16 @@ class HashTable extends AbstractBaseStructure implements Iterator
 
         if (!isset($this->table[$index])) {
             $this->table[$index] = $this->collectionFactory->create();
+            $this->indexes = array_keys($this->table);
         }
         $this->table[$index]->add($key, $value);
         $this->length++;
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function get(string $key)
     {
         $index = $this->getIndexByKey($key);
@@ -62,16 +64,23 @@ class HashTable extends AbstractBaseStructure implements Iterator
         return $this->table[$index]->findByKey($key);
     }
 
+    /**
+     * @param string $key
+     */
     public function removeByKey(string $key)
     {
         $index = $this->getIndexByKey($key);
         if (!$index) {
-            return null;
+            return;
         }
 
         $this->table[$index]->removeByKey($key);
     }
 
+    /**
+     * @param string $key
+     * @return int|null
+     */
     private function getIndexByKey(string $key)
     {
         $index = $this->createIndex($key);
@@ -85,47 +94,6 @@ class HashTable extends AbstractBaseStructure implements Iterator
     private function createIndex(string $key): int
     {
         return $this->itemFactory->create($key, null)->getHashCode();
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function current()
-    {
-        // TODO: Implement current() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function next()
-    {
-        // TODO: Implement next() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function key()
-    {
-        // TODO: Implement key() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function valid()
-    {
-        // TODO: Implement valid() method.
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rewind()
-    {
-        // TODO: Implement rewind() method.
     }
 }
 

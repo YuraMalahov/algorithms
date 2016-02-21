@@ -9,14 +9,14 @@ spl_autoload_register(function ($class) {
 });
 
 
-$t = new HashTable();
+$hashTable = new HashTable();
 
-$t->set('==', 1);
-$t->set('z', 11);
-$t->set('H2', 111);
+$hashTable->set('==', 1);
+$hashTable->set('z', 11);
+$hashTable->set('H2', 111);
 
-$t->set('B', 2);
-$t->set('C', 3);
-$t->set('c', 103);
+$hashTable->set('B', 2);
+$hashTable->set('C', 3);
+$hashTable->set('c', 103);
 
-echo $t->get('C');
+echo $hashTable->get('C') . "\n";
