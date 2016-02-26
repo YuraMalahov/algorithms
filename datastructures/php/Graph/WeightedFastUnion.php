@@ -14,7 +14,7 @@ class WeightedFastUnion
     private $id = [];
 
     /**
-     * @var array
+     * @var int[]
      */
     private $weight = [];
 
