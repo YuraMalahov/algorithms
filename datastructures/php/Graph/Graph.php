@@ -14,7 +14,7 @@ class Graph
     /**
      * @var int
      */
-    private $vertexes;
+    private $vertices;
 
     /**
      * @var int
@@ -28,12 +28,12 @@ class Graph
 
     /**
      * Graph constructor.
-     * @param int $vertexes
+     * @param int $vertices
      */
-    public function __construct(int $vertexes)
+    public function __construct(int $vertices)
     {
-        $this->vertexes = $vertexes;
-        for ($i = 0; $i < $vertexes; $i++) {
+        $this->vertices = $vertices;
+        for ($i = 0; $i < $vertices; $i++) {
             $this->adj[$i] = new Bag();
         }
     }
@@ -54,9 +54,9 @@ class Graph
      * Count of vertexes
      * @return int
      */
-    public function vertexes(): int
+    public function vertices(): int
     {
-        return $this->vertexes;
+        return $this->vertices;
     }
 
     /**
@@ -83,8 +83,8 @@ class Graph
      */
     public function __toString()
     {
-        $string = "vertexes: {$this->vertexes()}, edges: {$this->edges()} \n";
-        for ($i = 0; $i < $this->vertexes(); $i++) {
+        $string = "vertexes: {$this->vertices()}, edges: {$this->edges()} \n";
+        for ($i = 0; $i < $this->vertices(); $i++) {
             $string .= "$i: ";
             foreach ($this->adjacent($i) as $adjVertex) {
                 $string .= "$adjVertex, ";
@@ -115,7 +115,7 @@ class Graph
     public function maxDegree(): int
     {
         $max = 0;
-        for ($i = 0; $i < $this->vertexes(); $i++) {
+        for ($i = 0; $i < $this->vertices(); $i++) {
             $degree = $this->degree($i);
             if ($max < $degree) {
                 $max = $degree;
@@ -130,7 +130,7 @@ class Graph
      */
     public function avgDegree(): int
     {
-        return 2 * $this->edges() / $this->vertexes();
+        return (int) 2 * $this->edges() / $this->vertices();
     }
 
     /**
@@ -139,7 +139,7 @@ class Graph
     public function numberOfSelfLoops(): int
     {
         $count = 0;
-        for ($i = 0; $i < $this->vertexes(); $i++) {
+        for ($i = 0; $i < $this->vertices(); $i++) {
             foreach ($this->adjacent($i) as $vertex) {
                 if ($i === $vertex) {
                     $count++;

@@ -1,5 +1,6 @@
 <?php
 
+use Graph\DepthFirstSearch;
 use Graph\Graph;
 
 spl_autoload_register(function ($class) {
@@ -18,7 +19,10 @@ foreach ($edges as $edge) {
 }
 
 echo "edges: {$graph->edges()}\n";
-echo "vertexes: {$graph->vertexes()}\n";
+echo "vertexes: {$graph->vertices()}\n";
 echo "max degree: {$graph->maxDegree()}\n";
 echo "avg degree: {$graph->avgDegree()}\n";
 echo "graph: $graph\n";
+
+$dfs = new DepthFirstSearch($graph, 0);
+echo "count: {$dfs->count()}";
