@@ -2,6 +2,8 @@
 
 namespace Tree;
 
+use Node\NodeFactory;
+
 /**
  * Class BinarySearchTree
  * @package Tree
@@ -12,15 +14,19 @@ class BinarySearchTree
      * Root node
      * @var Node
      */
-    private $root;
+    private $root = null;
+
+    /**
+     * @var NodeFactory
+     */
+    private $nodeFactory;
 
     /**
      * BinarySearchTree constructor.
-     * @param Node $root
      */
-    public function __construct(Node $root)
+    public function __construct()
     {
-        $this->root = $root;
+        $this->nodeFactory = new NodeFactory();
     }
 
     /**
@@ -49,6 +55,10 @@ class BinarySearchTree
      */
     public function put(KeyInterface $key, $value)
     {
+        if (!$this->root) {
+            $this->root = $this->nodeFactory->create();
+        }
+
         $this->root = $this->_put($this->root, $key, $value);
     }
 
@@ -435,18 +445,4 @@ class BinarySearchTree
     }
 }
 
-$m = new Key('m');
-$bst = new BinarySearchTree(new Node($m, 23));
 
-$a = new Key('a');
-$bst->put($a, 99);
-$x = new Key('x');
-$bst->put($x, 88);
-$c = new Key('c');
-$bst->put($c, 77);
-$z = new Key('z');
-$bst->put($z, 66);
-$j = new Key('j');
-$bst->put($j, 52);
-
-echo "length: {$bst->length()}\n";

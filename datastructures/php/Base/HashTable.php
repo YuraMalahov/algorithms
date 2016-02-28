@@ -44,7 +44,6 @@ class HashTable extends AbstractBaseStructure
 
         if (!isset($this->table[$index])) {
             $this->table[$index] = $this->collectionFactory->create();
-            $this->indexes = array_keys($this->table);
         }
         $this->table[$index]->add($key, $value);
         $this->length++;
@@ -91,6 +90,10 @@ class HashTable extends AbstractBaseStructure
         return $index;
     }
 
+    /**
+     * @param string $key
+     * @return int
+     */
     private function createIndex(string $key): int
     {
         return $this->itemFactory->create($key, null)->getHashCode();

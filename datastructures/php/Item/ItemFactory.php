@@ -9,11 +9,11 @@ namespace Item;
 class ItemFactory
 {
     /**
-     * @param $value
      * @param string $key
-     * @return Item
+     * @param $value
+     * @return AbstractItem
      */
-    public function create(string $key, $value)
+    public function create(string $key, $value): AbstractItem
     {
         return new Item($key, $value);
     }
