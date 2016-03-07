@@ -149,7 +149,15 @@ class RedBlackTree
      */
     public function delete(KeyInterface $key)
     {
-        $this->deleteTemplate('_delete', $key);
+        if (!$this->root->getLeft()->isRed() && !$this->root->getRight()->isRed()) {
+            $this->root->setColor(Node::RED);
+        }
+
+        $this->_delete($key);
+
+        if (!$this->root->isEmpty()) {
+            $this->root->setColor(Node::BLACK);
+        }
     }
 
     /**
