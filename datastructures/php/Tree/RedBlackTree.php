@@ -153,7 +153,7 @@ class RedBlackTree
             $this->root->setColor(Node::RED);
         }
 
-        $this->_delete($key);
+        $this->_delete($this->root, $key);
 
         if (!$this->root->isEmpty()) {
             $this->root->setColor(Node::BLACK);
