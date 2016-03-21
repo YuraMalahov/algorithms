@@ -3,6 +3,8 @@
 namespace Tree;
 
 use Node\NodeFactory;
+use Key\KeyInterface;
+use Key\Key;
 
 /**
  * Class BinarySearchTree

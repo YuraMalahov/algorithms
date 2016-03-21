@@ -2,6 +2,9 @@
 
 namespace Tree;
 
+use Key\KeyInterface;
+use Key\Key;
+
 /**
  * Class RedBlackTree
  * @package Tree

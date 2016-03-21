@@ -1,6 +1,6 @@
 <?php
 
-namespace Tree;
+namespace Key;
 
 /**
  * Class Key
@@ -19,6 +19,10 @@ class Key implements KeyInterface
      */
     private $val;
 
+    /**
+     * Key constructor.
+     * @param string $key
+     */
     public function __construct(string $key = '')
     {
         $this->key = $key;
@@ -29,7 +33,7 @@ class Key implements KeyInterface
     }
 
     /**
-     * Get key
+     * @return string
      */
     public function getKey(): string
     {
@@ -37,13 +41,17 @@ class Key implements KeyInterface
     }
 
     /**
-     * Get key value
+     * @return int
      */
     public function getVal(): int
     {
         return $this->val;
     }
 
+    /**
+     * @param KeyInterface $key
+     * @return int
+     */
     public function compare(KeyInterface $key): int
     {
         return $this->val <=> $key->getVal();

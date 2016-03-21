@@ -2,8 +2,8 @@
 
 namespace Test;
 
-use Tree\KeyInterface;
-use Tree\Key;
+use Key\KeyInterface;
+use Key\Key;
 use Tree\Node;
 use Tree\RedBlackTree;
 
