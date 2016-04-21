@@ -15,7 +15,7 @@ for (let d = W - 1; d >= 0; d--) {
         count[a[i].charCodeAt(d) + 1]++;
     }
 
-    for (let r = 0; r < R; r++) {
+    for (let r = 0; r < R-1; r++) {
         count[r + 1] += count[r];
     }
 
