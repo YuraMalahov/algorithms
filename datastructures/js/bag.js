@@ -5,10 +5,16 @@ class Bag {
         this.items = [];
     }
 
+    /**
+     * @param {*} value
+     */
     add(value) {
         this.items.push(value);
     }
 
+    /**
+     * @returns {Object}
+     */
     [Symbol.iterator]() {
         let self = this,
             nextIndex = this.items.length - 1;
