@@ -20,10 +20,7 @@ class QuickFind {
     }
 
     connected(first, second) {
-        let firstValue = this.ids[first],
-            secondValue = this.ids[second];
-
-        return firstValue && secondValue && firstValue === secondValue;
+        return this.ids[first] === this.ids[second];
     }
 }
 
