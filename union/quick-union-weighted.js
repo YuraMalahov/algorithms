@@ -7,7 +7,7 @@ class QuickUnionWeighted {
     constructor(size) {
         this.ids = [];
         this.size = [];
-        
+
         for (let i = 0; i < size; i++) {
             this.ids[i] = i;
             this.size[i] = 1;
@@ -26,7 +26,7 @@ class QuickUnionWeighted {
         if (firstRoot === secondRoot) {
             return false;
         }
-
+        // attach smaller tree to bigger tree
         if (this.size[firstRoot] > this.size[secondRoot]) {
             this.ids[secondRoot] = firstRoot;
             this.size[firstRoot] += this.size[secondRoot];
@@ -54,6 +54,8 @@ class QuickUnionWeighted {
      */
     _root(searched) {
         while (searched !== this.ids[searched]) {
+            // attach subtree to root element
+            this.ids[searched] = this.ids[this.ids[searched]];
             searched = this.ids[searched];
         }
 
