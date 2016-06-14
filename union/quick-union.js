@@ -17,11 +17,14 @@ class QuickUnion {
      * @returns {boolean}
      */
     union(first, second) {
-        if (this.connected(first, second)) {
+        let firstRoot = this._root(first),
+            secondRoot = this._root(second);
+
+        if (firstRoot === secondRoot) {
             return false;
         }
 
-        this.ids[this._root(first)] = this._root(second);
+        this.ids[firstRoot] = secondRoot;
 
         return true;
     }
