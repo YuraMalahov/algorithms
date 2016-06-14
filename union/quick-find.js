@@ -1,6 +1,9 @@
 "use strict";
 
 class QuickFind {
+    /**
+     * @param {int} size
+     */
     constructor(size) {
         this.ids = [];
         for (let i = 0; i < size; i++) {
@@ -8,7 +11,16 @@ class QuickFind {
         }
     }
 
+    /**
+     * @param {int} first
+     * @param {int} second
+     * @returns {boolean}
+     */
     union(first, second) {
+        if (this.connected(first, second)) {
+            return false;
+        }
+        
         let firstValue = this.ids[first],
             secondValue = this.ids[second];
 
@@ -17,8 +29,15 @@ class QuickFind {
                 this.ids[i] = secondValue;
             }
         }
+        
+        return true;
     }
 
+    /**
+     * @param {int} first
+     * @param {int} second
+     * @returns {boolean}
+     */
     connected(first, second) {
         return this.ids[first] === this.ids[second];
     }
