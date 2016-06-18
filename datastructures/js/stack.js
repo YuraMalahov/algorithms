@@ -1,6 +1,6 @@
 "use strict";
 
-const Node = require("./node");
+const node = require("./node");
 
 module.exports.createStack = function () {
     /**
@@ -15,7 +15,7 @@ module.exports.createStack = function () {
         push(item) {
             let oldFirst = first;
 
-            first = new Node(item);
+            first = node.createNode(item);
             first.next = oldFirst;
         };
 
