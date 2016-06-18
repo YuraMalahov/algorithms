@@ -1,26 +1,50 @@
 "use strict";
 
-class Node {
-    constructor(value) {
-        this._value = value;
-        this._next = null;
-    }
+module.exports.createNode = function (item) {
+    /**
+     * @type {*}
+     */
+    let value = null;
     
-    set value(value) {
-        this._value = value;
-    }
+    /**
+     * @type {null|Node}
+     */
+    let next = null;
     
-    get value() {
-        return this._value;
-    }
-    
-    set next(next) {
-        this._next = next;
-    }
-    
-    get next() {
-        return this._next;
-    }
-}
+    class Node {
+        constructor(item) {
+            value = item;
+            next = null;
+        }
 
-module.exports = Node;
+        /**
+         * @param {*} item
+         */
+        set value(item) {
+            value = item;
+        }
+
+        /**
+         * @returns {*}
+         */
+        get value() {
+            return value;
+        }
+
+        /**
+         * @param {null|Node} node
+         */
+        set next(node) {
+            next = node;
+        }
+
+        /**
+         * @returns {null|Node}
+         */
+        get next() {
+            return next;
+        }
+    }
+
+    return new Node(item);
+};
