@@ -1,39 +1,50 @@
 "use strict";
 
-class Bag {
-    constructor() {
-        this.items = [];
-    }
+const node = require('./node');
 
+module.exports.createBag = function () {
     /**
-     * @param {*} value
+     * @type {null|Node}
      */
-    add(value) {
-        this.items.push(value);
-    }
+    let first = null;
+    
+    class Bag {
+        /**
+         * @param {*} value
+         */
+        add(value) {
+            let oldFirst = first;
 
-    /**
-     * @returns {Object}
-     */
-    [Symbol.iterator]() {
-        let self = this,
-            nextIndex = this.items.length - 1;
-
-        return {
-            next() {
-                if (nextIndex >= 0) {
+            first = node.createNode(value);
+            first.next = oldFirst;
+        }
+    
+        /**
+         * @returns {Object}
+         */
+        [Symbol.iterator]() {
+            let current = first;
+    
+            return {
+                next() {
+                    if (current) {
+                        let value = current.value;
+                        
+                        current = current.next;
+                        
+                        return {
+                            value: value,
+                            done: false
+                        };
+                    }
+    
                     return {
-                        value: self.items[nextIndex--],
-                        done: false
+                        done: true
                     };
                 }
-
-                return {
-                    done: true
-                };
             }
         }
     }
-}
-
-module.exports = Bag;
+    
+    return new Bag();
+}; 
