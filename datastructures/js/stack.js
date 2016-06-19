@@ -25,9 +25,10 @@ module.exports.createStack = function () {
         pop() {
             let oldFirst = first;
 
-            if (!this.isEmpty()) {
-                first = first.next;
+            if (this.isEmpty()) {
+                return oldFirst;
             }
+            first = first.next;
 
             return oldFirst.value;
         };
