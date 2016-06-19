@@ -14,7 +14,6 @@ module.exports.createNode = function (item) {
     class Node {
         constructor(item) {
             value = item;
-            next = null;
         }
 
         /**
