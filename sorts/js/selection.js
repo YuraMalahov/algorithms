@@ -3,8 +3,7 @@
 function sort(array) {
     for (let i = 0, count = array.length; i < count; i++) {
         let min = i,
-            j = i + 1,
-            tmp;
+            j = i + 1;
 
         while (j < count) {
             if (array[j] < array[min]) {
@@ -13,9 +12,7 @@ function sort(array) {
             j++
         }
 
-        tmp = array[min];
-        array[min] = array[i];
-        array[i] = tmp;
+        [array[min], array[i]] = [array[i], array[min]];
     }
 }
 

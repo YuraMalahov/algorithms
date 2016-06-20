@@ -12,14 +12,45 @@ function sort(array) {
 
     while (step >= 1) {
         for (let i = step; i < count; i++) {
-            for (let j = i; j >= step && array[j] < array[j - step]; j -= step) {
-                [array[j], array[j - step]] = [array[j - step], array[j]];
+            let j = i,
+                pick = array[j];
+
+            while (j >= step && pick < array[j - step]) {
+                array[j] = array[j - step];
+                j -= step;
             }
+
+            array[j] = pick;
         }
         step = Math.floor(step / 3);
     }
 }
+
 var a = [2,3,1,5,9,4,0,8,6,7];
 
 sort(a);
 console.log(a);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

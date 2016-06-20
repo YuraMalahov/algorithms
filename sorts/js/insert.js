@@ -5,7 +5,7 @@ function sort(array) {
         let pick = array[i],
             j = i;
 
-        while (pick < array[j - 1] && j - 1 >= 0) {
+        while (pick < array[j - 1] && j > 0) {
             array[j] = array[j - 1];
             j--;
         }
