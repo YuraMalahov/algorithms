@@ -2,10 +2,10 @@
 
 function sort (array) {
     let aux = [];
-    
+
     for (let size = 1, count = array.length; size < count; size += size) {
-        for (let lowest = 0; lowest < count - size; lowest += size + size) {
-            merge(array, lowest, lowest + size - 1, Math.min(lowest + size + size - 1, count - 1));
+        for (let lowest = 0; lowest < count - size; lowest += size * 2) {
+            merge(array, lowest, lowest + size - 1, Math.min(lowest + size * 2 - 1, count - 1));
         }
     }
 
