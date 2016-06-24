@@ -2,19 +2,11 @@
 
 function sort (array) {
     let aux = [];
-
-    sort(array, 0, a.length - 1);
-
-    function sort(array, lowest, highest) {
-        if (highest <= lowest) {
-            return;
+    
+    for (let size = 1, count = array.length; size < count; size += size) {
+        for (let lowest = 0; lowest < count - size; lowest += size + size) {
+            merge(array, lowest, lowest + size - 1, Math.min(lowest + size + size - 1, count - 1));
         }
-
-        let mid = lowest + Math.floor((highest - lowest) / 2);
-
-        sort(array, lowest, mid);
-        sort(array, mid + 1, highest);
-        merge(array, lowest, mid, highest);
     }
 
     function merge(array, lowest, middle, highest) {
