@@ -1,13 +1,9 @@
 "use strict";
 
-function exch(a, i, j) {
-    let tmp = a[i];
-    a[i] = a[j];
-    a[j] = tmp;
-}
-
 function sort(array, lowest, highest) {
-    if (highest <= lowest) return;
+    if (highest <= lowest) {
+        return;
+    }
 
     let j = partition(array, lowest, highest);
     sort(array, lowest, j-1);
@@ -20,13 +16,23 @@ function partition(array, lowest, highest){
         center = array[lowest];
 
     while (true) {
-        while (array[++i] < center) if (i === highest) break;
-        while (array[--j] > center) if (j === lowest) break;
-        if (i >= j) break;
+        while (array[++i] < center) {
+            if (i === highest) {
+                break;
+            }
+        }
+        while (array[--j] > center) {
+            if (j === lowest) {
+                break;
+            }
+        }
+        if (i >= j) {
+            break;
+        }
 
-        exch(array, i, j);
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    exch(array, lowest, j);
+    [array[lowest], array[j]] = [array[j], array[lowest]];
 
     return j;
 }
