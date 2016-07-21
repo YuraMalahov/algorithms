@@ -1,0 +1,19 @@
+commit f7c44c3330df563c1931eac113f3d3eaa9f91cb4
+Author: YuraMalahov <yura.malahov@gmail.com>
+Date:   Thu Jul 21 21:45:39 2016 +0300
+
+    process message
+
+diff --git a/server.js b/server.js
+index 9882679..02f2807 100644
+--- a/server.js
++++ b/server.js
+@@ -9,6 +9,7 @@ var server = http.createServer(function (req, res) {
+ 
+ server.listen("8000", function () {
+     console.log("listen 8000...");
+-    
++
++    process.send("OK");
+ });
+ 
