@@ -1,6 +1,6 @@
 "use strict";
 
-const Bag = require('./bag');
+const Bag = require('./../bag');
 
 class Graph {
     /**
