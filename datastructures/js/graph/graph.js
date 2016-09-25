@@ -1,6 +1,6 @@
 "use strict";
 
-const Bag = require('./../bag');
+const Bag = require('../bag');
 
 class Graph {
     /**
@@ -12,7 +12,7 @@ class Graph {
         this._adjacent = [];
 
         for (let i = 0; i < vertices; i++) {
-            this._adjacent.push(new Bag());
+            this._adjacent.push(Bag.createBag());
         }
     }
 
