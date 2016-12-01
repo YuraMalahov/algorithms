@@ -8,17 +8,17 @@ function sort(array, lowest, highest) {
     let lt = lowest,
         gt = highest,
         compare = array[lowest],
-        i = lowest,
-        cmp;
+        i = lowest + 1,
+        iCompare;
 
     while (i <= gt) {
-        cmp = array[i];
-        if (cmp < compare) {
-            [array[lt], array[i]] = [cmp, array[lt]];
+        iCompare = array[i];
+        if (iCompare < compare) {
+            [array[lt], array[i]] = [iCompare, array[lt]];
             i++;
             lt++;
-        } else if (cmp > compare) {
-            [array[gt], array[i]] = [cmp, array[gt]];
+        } else if (iCompare > compare) {
+            [array[gt], array[i]] = [iCompare, array[gt]];
             gt--;
         } else {
             i++;
