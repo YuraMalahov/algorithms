@@ -55,8 +55,7 @@ class HeapMax {
         }
 
         let max = this._items[1];
-        this.exchange(1, this._count);
-        this._count--;
+        this.exchange(1, this._count--);
         this.sink(1);
         this._items.pop();
 
@@ -67,7 +66,7 @@ class HeapMax {
      * @returns {boolean}
      */
     isEmpty() {
-        return 1 === this._count;
+        return 0 === this._count;
     }
 
     /**
