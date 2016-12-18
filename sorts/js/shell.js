@@ -16,7 +16,12 @@ function sort(array) {
                 [array[j], array[j - step]] = [array[j - step], array[j]];
             }
         }
-        step = Math.floor(step / 3);
+        
+        if (step === 1) {
+            break;
+        }
+
+        step = Math.ceil(step / 3);
     }
 }
 var a = [2,3,1,5,9,4,0,8,6,7];

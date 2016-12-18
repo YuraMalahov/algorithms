@@ -22,7 +22,12 @@ function sort(array) {
 
             array[j] = pick;
         }
-        step = Math.floor(step / 3);
+        
+        if (step === 1) {
+            break;
+        }
+
+        step = Math.ceil(step / 3);
     }
 }
 
