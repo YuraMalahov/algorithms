@@ -5,9 +5,9 @@ class QuickUnion {
      * @param {int} size
      */
     constructor(size) {
-        this.ids = [];
+        this._ids = [];
         for (let i = 0; i < size; i++) {
-            this.ids[i] = i;
+            this._ids[i] = i;
         }
     }
 
@@ -17,14 +17,14 @@ class QuickUnion {
      * @returns {boolean}
      */
     union(first, second) {
-        let firstRoot = this._root(first),
-            secondRoot = this._root(second);
+        let firstRoot = this._root(first);
+        let secondRoot = this._root(second);
 
         if (firstRoot === secondRoot) {
             return false;
         }
 
-        this.ids[firstRoot] = secondRoot;
+        this._ids[firstRoot] = secondRoot;
 
         return true;
     }
@@ -44,8 +44,8 @@ class QuickUnion {
      * @private
      */
     _root(searched) {
-        while (searched !== this.ids[searched]) {
-            searched = this.ids[searched];
+        while (searched !== this._ids[searched]) {
+            searched = this._ids[searched];
         }
 
         return searched;

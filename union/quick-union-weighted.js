@@ -5,11 +5,11 @@ class QuickUnionWeighted {
      * @param {int} size
      */
     constructor(size) {
-        this.ids = [];
+        this._ids = [];
         this.size = [];
 
         for (let i = 0; i < size; i++) {
-            this.ids[i] = i;
+            this._ids[i] = i;
             this.size[i] = 1;
         }
     }
@@ -20,18 +20,18 @@ class QuickUnionWeighted {
      * @returns {boolean}
      */
     union(first, second) {
-        let firstRoot = this._root(first),
-            secondRoot = this._root(second);
+        let firstRoot = this._root(first);
+        let secondRoot = this._root(second);
 
         if (firstRoot === secondRoot) {
             return false;
         }
         // attach smaller tree to bigger tree
         if (this.size[firstRoot] > this.size[secondRoot]) {
-            this.ids[secondRoot] = firstRoot;
+            this._ids[secondRoot] = firstRoot;
             this.size[firstRoot] += this.size[secondRoot];
         } else {
-            this.ids[firstRoot] = secondRoot;
+            this._ids[firstRoot] = secondRoot;
             this.size[secondRoot] += this.size[firstRoot];
         }
 
@@ -53,10 +53,10 @@ class QuickUnionWeighted {
      * @private
      */
     _root(searched) {
-        while (searched !== this.ids[searched]) {
+        while (searched !== this._ids[searched]) {
             // attach subtree to root element
-            this.ids[searched] = this.ids[this.ids[searched]];
-            searched = this.ids[searched];
+            this._ids[searched] = this._ids[this._ids[searched]];
+            searched = this._ids[searched];
         }
 
         return searched;
