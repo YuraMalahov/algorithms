@@ -1,7 +1,7 @@
 "use strict";
 
 function circle(x, y, radius) {
-    const TAU = Math.PI*2;
+    const CIRCUMFERENCE_1_8 = Math.PI/4;
     const STEP = 1/radius;
     const points = [];
 
@@ -9,11 +9,28 @@ function circle(x, y, radius) {
     let a = 0;
     let b = 0;
 
-    while (TAU > angle) {
-        a = x + Math.cos(angle) * radius;
-        b = y + Math.sin(angle) * radius;
+    while (angle < CIRCUMFERENCE_1_8) {
+        a = Math.cos(angle) * radius;
+        b = Math.sin(angle) * radius;
         angle += STEP;
-        points.push([a, b]);
+
+        // II
+        points.push([x + a, y + b]);
+        // III
+        points.push([x - a, y + b]);
+        // IV
+        points.push([x + a, y - b]);
+        // I
+        points.push([x - a, y - b]);
+        // add reverse points
+        // II
+        points.push([x + b, y + a]);
+        // III
+        points.push([x - b, y + a]);
+        // IV
+        points.push([x + b, y - a]);
+        // I
+        points.push([x - b, y - a]);
     }
 
     return points;
