@@ -1,7 +1,7 @@
 "use strict";
 
-const node = require("./node");
-const NodeIterator = require("./node-iterator");
+const node = require("../node");
+const NodeIterator = require("../node-iterator");
 
 class Queue extends NodeIterator {
     constructor() {
