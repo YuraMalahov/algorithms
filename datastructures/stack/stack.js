@@ -17,7 +17,6 @@ class Stack extends NodeIterator {
      */
     push(item) {
         let oldFirst = this._first;
-
         this._first = node.createNode(item);
         this._first.next = oldFirst;
     }
@@ -31,6 +30,7 @@ class Stack extends NodeIterator {
         if (this.isEmpty()) {
             return oldFirst;
         }
+
         this._first = this._first.next;
 
         return oldFirst.value;
