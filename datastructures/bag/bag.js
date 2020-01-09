@@ -1,7 +1,7 @@
 "use strict";
 
-const node = require("./node"),
-    NodeIterator = require("./node-iterator");
+const node = require("../node"),
+    NodeIterator = require("../node-iterator");
 
 class Bag extends NodeIterator {
     constructor() {
