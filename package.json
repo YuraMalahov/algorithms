@@ -11,7 +11,8 @@
     "mocha": "^3.4.1"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --recursive"
+    "test": "./node_modules/.bin/mocha --reporter spec --recursive",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/YuraMalahov/algorithms/issues"
   },
-  "homepage": "https://github.com/YuraMalahov/algorithms#readme"
+  "homepage": "https://github.com/YuraMalahov/algorithms#readme",
+  "dependencies": {
+    "typescript": "^3.7.4"
+  }
 }
