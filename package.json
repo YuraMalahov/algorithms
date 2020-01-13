@@ -8,10 +8,10 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.4.1"
+    "mocha": "^3.5.3"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --recursive",
+    "test": "jest",
     "build": "tsc"
   },
   "repository": {
@@ -25,6 +25,15 @@
   },
   "homepage": "https://github.com/YuraMalahov/algorithms#readme",
   "dependencies": {
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.1.6",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
+    "eslint": "^6.8.0",
+    "jest": "^24.9.0",
+    "jest-junit": "^10.0.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-jest": "^24.3.0",
     "typescript": "^3.7.4"
   }
 }
