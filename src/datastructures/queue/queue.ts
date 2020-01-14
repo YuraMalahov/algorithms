@@ -36,7 +36,7 @@ export class Queue<T> {
         this.last = newLast;
     }
 
-    dequeue(): T|null {
+    public dequeue(): T|null {
         if (this.first === null) {
             return null;
         }
@@ -56,5 +56,3 @@ export class Queue<T> {
         return this.first === null;
     }
 }
-
-module.exports = Queue;
