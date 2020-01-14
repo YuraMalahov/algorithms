@@ -16,6 +16,10 @@ describe('Bag', () => {
             expect(bag.length()).toEqual(3);
         });
 
+        test('bag to array', () => {
+            expect(bag.toArray()).toEqual([2, 1, 0]);
+        });
+
         test('iterate bag', () => {
             const arr = [];
 

@@ -48,6 +48,19 @@ export class Bag<T> implements Iterable<T> {
         };
     }
 
+    public toArray(): T[] {
+        const array = [];
+        let current = this.first;
+
+        while (current) {
+            array.push(current.getValue());
+
+            current = current.getNext();
+        }
+
+        return array;
+    }
+
     public add(value: T): void {
         const oldFirst = this.first;
 
