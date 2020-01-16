@@ -33,5 +33,13 @@ describe('SelectionSort', () => {
 
             expect(array).toEqual([]);
         });
+
+        test('sort one element array', () => {
+            const array = [0];
+
+            SelectionSort.sort(array);
+
+            expect(array).toEqual([0]);
+        });
     });
 });
