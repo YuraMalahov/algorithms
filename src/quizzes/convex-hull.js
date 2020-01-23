@@ -3,7 +3,7 @@ function computeAngle(originPoint, computedPoint) {
     const dy = computedPoint[1] - originPoint[1];
 
     if (dy === 0 && dx == 0) {
-        throw new Error('Same point');
+        return null;
     }
 
     if (dy === 0 && dx > 0) {
@@ -69,29 +69,34 @@ function main(points) {
 
     const origin = removeOrigin(points);
     const sortedPoints = sortByOrigin(origin, points);
-    const stack = [origin, sortedPoints[0]];
-
-    let prevAngle = -Infinity;
+    const pointsStack = [origin, sortedPoints[0]];
+    const angleStack = [-Infinity, computeAngle(origin, sortedPoints[0])];
 
     for (let i = 1; i < sortedPoints.length; i++) {
-        let point = stack.pop();
-        let currentAngle = computeAngle(point, sortedPoints[i]);
+        let prevPoint = pointsStack.pop();
+        let prevAngle = angleStack.pop();
+        const currentPoint = sortedPoints[i];
+        let currentAngle = computeAngle(prevPoint, currentPoint);
 
-        while (currentAngle < prevAngle) {
-            point = stack.pop();
-            prevAngle = currentAngle;
-            currentAngle = computeAngle(point, sortedPoints[i]);
+        while (currentAngle <= prevAngle) {
+            prevPoint = pointsStack.pop();
+            prevAngle = angleStack.pop();
+            currentAngle = computeAngle(prevPoint, currentPoint);
         }
 
-        stack.push(point);
-        stack.push(sortedPoints[i]);
-        prevAngle = currentAngle;
+        angleStack.push(prevAngle);
+        pointsStack.push(prevPoint);
+        angleStack.push(currentAngle);
+        pointsStack.push(currentPoint);
     }
 
-    return stack;
+    return pointsStack;
 }
 
 
-const points = [[5, 0], [5, 5], [0, 5], [4, 4], [3, 6], [1, 2], [3, 3], [2, 4], [4, 2]];
+const points = [
+    [5, 0], [0, 5], [4, 4], [3, 6], [1, 2], [3, 3], [2, 4], [4, 2], [5, 2], [5, 4], [5, 5], [4, 0], [2, 0], [2, 2],
+    [3, 1], [1, 4], [3, 5]
+];
 
 console.log(main(points));
