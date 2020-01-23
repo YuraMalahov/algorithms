@@ -62,6 +62,18 @@ function removeOrigin(points) {
     return origin;
 }
 
+function isLeftTurn(currentPoint, prevPoint, pointsStack) {
+    if (pointsStack.length === 0) {
+        return true;
+    }
+
+    const basePoint = pointsStack.pop();
+
+    pointsStack.push(basePoint);
+
+    return computeAngle(basePoint, currentPoint) > computeAngle(basePoint, prevPoint);
+}
+
 function main(points) {
     if (points.length < 3) {
         return [];
@@ -70,23 +82,16 @@ function main(points) {
     const origin = removeOrigin(points);
     const sortedPoints = sortByOrigin(origin, points);
     const pointsStack = [origin, sortedPoints[0]];
-    const angleStack = [-Infinity, computeAngle(origin, sortedPoints[0])];
 
     for (let i = 1; i < sortedPoints.length; i++) {
         let prevPoint = pointsStack.pop();
-        let prevAngle = angleStack.pop();
         const currentPoint = sortedPoints[i];
-        let currentAngle = computeAngle(prevPoint, currentPoint);
 
-        while (currentAngle <= prevAngle) {
+        while (!isLeftTurn(currentPoint, prevPoint, pointsStack)) {
             prevPoint = pointsStack.pop();
-            prevAngle = angleStack.pop();
-            currentAngle = computeAngle(prevPoint, currentPoint);
         }
 
-        angleStack.push(prevAngle);
         pointsStack.push(prevPoint);
-        angleStack.push(currentAngle);
         pointsStack.push(currentPoint);
     }
 
