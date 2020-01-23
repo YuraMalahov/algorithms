@@ -28,8 +28,8 @@ export class ConvexHull {
         const pointsStack = [origin, sortedPoints[0]];
 
         for (let i = 1; i < sortedPoints.length; i++) {
-            let prevPoint = pointsStack.pop() as Point;
             const currentPoint = sortedPoints[i];
+            let prevPoint = pointsStack.pop() as Point;
 
             while (!this.isLeftTurn(currentPoint, prevPoint, pointsStack)) {
                 prevPoint = pointsStack.pop() as Point;
@@ -68,11 +68,7 @@ export class ConvexHull {
 
         const angle = Math.atan(dy/dx) * 180/Math.PI;;
 
-        if (dx < 0 && dy >= 0) {
-            return 180 + angle;
-        }
-
-        if (dx < 0 && dy < 0) {
+        if ((dx < 0 && dy >= 0) || (dx < 0 && dy < 0)) {
             return 180 + angle;
         }
 
@@ -84,9 +80,7 @@ export class ConvexHull {
     }
 
     private sortByOrigin(origin: Point, points: Point[]): Point[] {
-        return points.sort((a ,b) => {
-            return this.computeAngle(origin, a) - this.computeAngle(origin, b);
-        });
+        return points.sort((a, b) => this.computeAngle(origin, a) - this.computeAngle(origin, b));
     }
 
     private removeOrigin(points: Point[]): Point {
@@ -99,6 +93,7 @@ export class ConvexHull {
         }
 
         const origin = points[min];
+
         points.splice(min, 1);
 
         return origin;
