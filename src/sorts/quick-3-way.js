@@ -8,7 +8,7 @@ function sort(array, lowest, highest) {
     let lt = lowest,
         gt = highest,
         compare = array[lowest],
-        i = lowest + 1,
+        i = lowest,
         iCompare;
 
     while (i <= gt) {
