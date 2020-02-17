@@ -41,5 +41,20 @@ describe('SelectionSort', () => {
 
             expect(array).toEqual([0]);
         });
+
+        test('sort array with duplicates', () => {
+            const array = [
+                5, 3, 8, 2, 5, 9, 0, 9, 3, 7, 9, 2, 0, 7, 5, 1, 6, 1, 8, 2, 3, 7, 6, 8, 0, 6, 4, 4, 1, 4
+            ];
+
+            SelectionSort.sort(array);
+
+            expect(array).toEqual(
+                [
+                    0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7,
+                    8, 8, 8, 9, 9, 9
+                ]
+            );
+        });
     });
 });
