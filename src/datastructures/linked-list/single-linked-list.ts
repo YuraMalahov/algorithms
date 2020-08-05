@@ -29,6 +29,30 @@ export class SingleLnkedList<T> {
         this.first = null;
     }
 
+    public [Symbol.iterator](): Iterator<T> {
+        let current = this.first;
+
+        return {
+            next(): IteratorResult<T> {
+                if (current) {
+                    const value = current.getValue();
+
+                    current = current.getNext();
+
+                    return {
+                        value: value,
+                        done: false
+                    };
+                }
+
+                return {
+                    value: null,
+                    done: true
+                };
+            }
+        };
+    }
+
     public addFirst(value: T): void {
         const node = new Node<T>(value);
 
