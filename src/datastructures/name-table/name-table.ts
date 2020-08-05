@@ -1,6 +1,6 @@
 import { HashCode } from "./hash-code";
 
-class NameTable {
+export class NameTable {
     private hashCode: HashCode;
     private keys: Array<string>;
     private values: Array<any>;
@@ -13,38 +13,42 @@ class NameTable {
         this.values = new Array();
     }
 
-    put(key: string, val: any) {
-        // converts hashcode into positive and takes mode of table size
-        const hash = this.hashCode.hashCode(key) & 0x7fffffff % this.tableSize;
+    private hashKey(key: string): number {
+        // converts the hashcode into positive number and takes mode of the table size
+        return this.hashCode.hashCode(key) & 0x7fffffff % this.tableSize;
+    }
 
+    public put(key: string, val: any) {
+        const hash = this.hashKey(key);
+        
         this.keys[hash] = key;
         this.values[hash] = val;
     }
-
-    get(key: string): any {
-        const hash = this.hashCode.hashCode(key) & 0x7fffffff % this.tableSize;
+    
+    public get(key: string): any {
+        const hash = this.hashKey(key);
 
         if (this.keys[hash] !== key) {
-            return null;
+            return undefined;
         }
 
         return this.values[hash];
     }
 
-    find(key: string) {
+    public find(key: string) {
 
     }
 
-    delete(key: string) {
+    public delete(key: string) {
     }
 
-    contains(key: string) {
+    public contains(key: string) {
     }
 
-    isEmpty() {
+    public isEmpty() {
     }
 
-    size() {}
+    public size() {}
 
     [Symbol.iterator] = function () {
         return {
