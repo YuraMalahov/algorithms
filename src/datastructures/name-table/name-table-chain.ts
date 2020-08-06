@@ -1,12 +1,12 @@
-import { HashCode } from "./hash-code";
-import { SingleLnkedList } from "../linked-list/single-linked-list";
-import { HashElement } from "./hash-element";
+import { HashCode } from './hash-code';
+import { SingleLnkedList } from '../linked-list/single-linked-list';
+import { HashElement } from './hash-element';
 
 export class NameTableChain<V> {
     private hashCode: HashCode;
     private data: Array<SingleLnkedList<HashElement<string, V>>>;
     private tableSize: number;
-    private loadFactore: number;
+    // private loadFactore: number;
 
     constructor() {
         this.tableSize = 8;
@@ -25,7 +25,7 @@ export class NameTableChain<V> {
 
         this.data[hash].addFirst(new HashElement(key, val));
     }
-    
+
     public get(key: string): V | undefined {
         const hash = this.hashKey(key);
 
