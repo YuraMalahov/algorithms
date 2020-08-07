@@ -15,7 +15,10 @@ export class NameTableChain<V> {
         this.numElements = 0;
         this.hashCode = new HashCode();
         this.data = new Array(this.tableSize);
-        this.data.fill(new SingleLnkedList<HashElement<string, V>>());
+
+        for (let i = 0; i < this.tableSize; i++) {
+            this.data[i] = new SingleLnkedList<HashElement<string, V>>();
+        }
     }
 
     private hashKey(key: string): number {
@@ -23,10 +26,19 @@ export class NameTableChain<V> {
         return this.hashCode.hashCode(key) & 0x7fffffff % this.tableSize;
     }
 
+    private resize(tableSize: number): void {
+        return;
+    }
+
     public put(key: string, val: V): void {
+        if (this.loadFactore() > this.maxLoadFactore) {
+            this.resize(this.tableSize * 2);
+        }
+
+        const item = new HashElement(key, val);
         const hash = this.hashKey(key);
 
-        this.data[hash].addFirst(new HashElement(key, val));
+        this.data[hash].addFirst(item);
     }
 
     public get(key: string): V | undefined {
