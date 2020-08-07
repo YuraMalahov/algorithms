@@ -119,6 +119,36 @@ export class SingleLnkedList<T> {
         return node.getValue();
     }
 
+    public removeByIndex(index: number): T | null {
+        if (index < 0 || index + 1 > this.size || this.first === null) {
+            return null;
+        }
+
+        if (index === 0) {
+            return this.removeFirst();
+        }
+
+        if (index + 1 === this.size) {
+            return this.removeLast();
+        }
+
+        let currentIndex = 0;
+        let prev = this.first;
+
+        while (currentIndex !== index - 1) {
+            prev = prev.getNext() as Node<T>;
+            currentIndex++;
+        }
+
+        const node = prev.getNext() as Node<T>;
+
+        prev.setNext(node.getNext());
+
+        this.size--;
+
+        return node.getValue();
+    }
+
     public length(): number {
         return this.size;
     }

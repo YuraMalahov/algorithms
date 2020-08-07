@@ -89,5 +89,21 @@ describe('SingleLnkedList', () => {
             expect(list.removeLast()).toEqual(2);
             expect(list.length()).toEqual(0);
         });
+
+        test('remove by index', () => {
+            list.addFirst(1);
+            expect(list.length()).toEqual(1);
+            list.addLast(2);
+            expect(list.length()).toEqual(2);
+            list.addFirst(0);
+            expect(list.length()).toEqual(3);
+            list.addLast(3);
+            expect(list.length()).toEqual(4);
+
+            const item = list.removeByIndex(2);
+
+            expect(list.length()).toEqual(3);
+            expect(item).toEqual(2);
+        })
     });
 });

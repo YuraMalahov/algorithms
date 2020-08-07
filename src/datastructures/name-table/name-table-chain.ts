@@ -39,6 +39,7 @@ export class NameTableChain<V> {
         const hash = this.hashKey(key);
 
         this.data[hash].addFirst(item);
+        this.numElements++;
     }
 
     public get(key: string): V | undefined {
@@ -57,15 +58,42 @@ export class NameTableChain<V> {
         return undefined;
     }
 
+    public delete(key: string): V | undefined {
+        const index = this.findListItemIndex(key);
+
+        if (index === -1) {
+            return undefined;
+        }
+
+        const hash = this.hashKey(key);
+        const item = this.data[hash].removeByIndex(index);
+
+        this.numElements--;
+
+        return item?.getValue();
+    }
+
+    private findListItemIndex(key: string): number {
+        const hash = this.hashKey(key);
+
+        let index = -1;
+        let current = 0;
+
+        for (const item of this.data[hash]) {
+            if (item?.getKey() === key) {
+                index = current;
+
+                break;
+            }
+
+            current++;
+        }
+
+        return index;
+    }
+
     public loadFactore(): number {
         return this.numElements / this.tableSize;
-    }
-
-    public find(key: string) {
-
-    }
-
-    public delete(key: string) {
     }
 
     public contains(key: string) {
