@@ -2,7 +2,7 @@ import { NameTableChain } from '../name-table-chain';
 
 describe('NameTableChain', () => {
     describe('name table chain', () => {
-        const nameTableChain = new NameTableChain<number>();
+        const nameTableChain = new NameTableChain<number>(8);
 
         test('exist', () => {
             nameTableChain.put('abc', 23)

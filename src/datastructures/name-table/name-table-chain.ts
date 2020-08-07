@@ -6,10 +6,13 @@ export class NameTableChain<V> {
     private hashCode: HashCode;
     private data: Array<SingleLnkedList<HashElement<string, V>>>;
     private tableSize: number;
-    // private loadFactore: number;
+    private maxLoadFactore: number;
+    private numElements: number;
 
-    constructor() {
-        this.tableSize = 8;
+    constructor(tableSize: number, maxLoadFactore = 0.75) {
+        this.tableSize = tableSize;
+        this.maxLoadFactore = maxLoadFactore;
+        this.numElements = 0;
         this.hashCode = new HashCode();
         this.data = new Array(this.tableSize);
         this.data.fill(new SingleLnkedList<HashElement<string, V>>());
@@ -40,6 +43,10 @@ export class NameTableChain<V> {
         }
 
         return undefined;
+    }
+
+    public loadFactore(): number {
+        return this.numElements / this.tableSize;
     }
 
     public find(key: string) {
