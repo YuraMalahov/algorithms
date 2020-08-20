@@ -27,7 +27,25 @@ export class NameTableChain<V> {
     }
 
     private resize(tableSize: number): void {
-        return;
+        const harray = new Array(tableSize);
+
+        for (let i = 0; i < tableSize; i++) {
+            harray[i] = new SingleLnkedList<HashElement<string, V>>();
+        }
+
+        this.tableSize = tableSize;
+
+        for (let i = 0; i < this.data.length; i++) {
+            for (const item of this.data[i]) {
+                const key = item.getKey();
+                const hash = this.hashKey(key);
+                const newItem = new HashElement(key, item.getValue());
+
+                harray[hash].addFirst(newItem);
+            }
+        }
+
+        this.data = harray;
     }
 
     public put(key: string, val: V): void {
@@ -44,10 +62,6 @@ export class NameTableChain<V> {
 
     public get(key: string): V | undefined {
         const hash = this.hashKey(key);
-
-        if (!this.data[hash].length()) {
-            return undefined;
-        }
 
         for (const item of this.data[hash]) {
             if (item.getKey() === key) {
