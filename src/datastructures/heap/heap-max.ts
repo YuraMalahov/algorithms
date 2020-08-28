@@ -1,41 +1,46 @@
 
 export class HeapMax {
     private items: number[];
-    private count: number;
+    private lastPosition: number;
 
     constructor() {
-        this.items = [NaN];
-        this.count = 0;
+        this.items = [];
+        this.lastPosition = -1;
     }
 
-    private swim(current: number): void {
-        let parent = Math.floor(current/2);
+    private swim(position: number): void {
+        if (position === 0) {
+            return;
+        }
 
-        while (current > 1 && this.items[current] > this.items[parent]) {
-            this.exchange(parent, current);
+        const parent = Math.floor((position-1)/2);
 
-            current = Math.floor(current/2);
-            parent = Math.floor(current/2);
+        if (this.items[position] > this.items[parent]) {
+            this.exchange(parent, position);
+            this.swim(parent);
         }
     }
 
-    private sink(current: number): void {
-        let child;
+    private sink(parent: number): void {
+        const left = 2 * parent + 1;
+        const right = 2 * parent + 2;
 
-        while (current * 2 <= this.count) {
-            child = current * 2;
-
-            if (this.items[child] < this.items[child+1]) {
-                child++;
-            }
-
-            if (this.items[current] > this.items[child]) {
-                break;
-            }
-
-            this.exchange(child, current);
-            current = child;
+        if (left > this.lastPosition) {
+            return;
         }
+
+        let child = left;
+
+        if (right <= this.lastPosition && this.items[right] > this.items[left]) {
+            child = right;
+        }
+
+        if (this.items[child] <= this.items[parent]) {
+            return;
+        }
+
+        this.exchange(parent, child);
+        this.sink(child);
     }
 
     private exchange(first: number, second: number): void {
@@ -43,25 +48,21 @@ export class HeapMax {
     }
 
     public insert(item: number): void {
-        this.items[++this.count] = item;
-        this.swim(this.count);
+        this.items[++this.lastPosition] = item;
+        this.swim(this.lastPosition);
     }
 
     public delete(): number|null {
-        if (this.isEmpty()) {
+        if (this.lastPosition === -1) {
             return null;
         }
 
-        const max = this.items[1];
+        const item = this.items[0];
 
-        this.exchange(1, this.count--);
-        this.sink(1);
+        this.exchange(0, this.lastPosition--);
+        this.sink(0);
         this.items.pop();
 
-        return max;
-    }
-
-    public isEmpty(): boolean {
-        return 0 === this.count;
+        return item;
     }
 }
