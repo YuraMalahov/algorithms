@@ -61,7 +61,6 @@ export class HeapMax {
 
         this.exchange(0, this.lastPosition--);
         this.sink(0);
-        this.items.pop();
 
         return item;
     }
