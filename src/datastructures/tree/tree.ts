@@ -17,8 +17,26 @@ export class Tree<T> {
         this.size++;
     }
 
+    public remove(value: T): boolean {
+        const node = this.find(this.root, value);
+
+        if (!node) {
+            return false;
+        }
+
+        this.delete(node);
+
+        return true;
+    }
+
     public has(value: T): boolean {
-        return this.exists(this.root, value);
+        const node = this.find(this.root, value);
+
+        if (node === null) {
+            return false;
+        }
+
+        return true;
     }
 
     public travers(travers: Traversal<T>): void {
@@ -29,6 +47,7 @@ export class Tree<T> {
         if (child.value > parent.value) {
             if (parent.right === null) {
                 parent.right = child;
+                child.parent = parent;
 
                 return;
             }
@@ -40,6 +59,7 @@ export class Tree<T> {
 
         if (parent.left === null) {
             parent.left = child;
+            child.parent = parent;
 
             return;
         }
@@ -47,20 +67,114 @@ export class Tree<T> {
         this.push(parent.left as Node<T>, child);
     }
 
-    private exists(node: Node<T>|null, value: T): boolean {
+    private find(node: Node<T>|null, value: T): Node<T>|null {
         if (node === null) {
-            return false;
+            return null;
         }
 
         if (node.value === value) {
-            return true;
+            return node;
         }
 
         if (value > node.value) {
-            return this.exists(node.right, value);
+            return this.find(node.right, value);
         }
 
-        return this.exists(node.left, value);
+        return this.find(node.left, value);
+    }
+
+    private delete(node: Node<T>): void {
+        const parent = node.parent;
+
+        if (parent === null) {
+            if (this.root?.left === null && this.root?.right === null) {
+                this.root = null;
+
+                return;
+            }
+
+            if (this.root?.left === null && this.root.right) {
+                this.root.right.parent = null;
+                this.root = this.root.right;
+
+                return;
+            }
+
+            this.replace(this.root as Node<T>);
+            (this.root as Node<T>).parent = null;
+
+            return;
+        }
+
+        if (node.left === null && node.right === null) {
+            this.set(parent, node, null);
+
+            return;
+        }
+
+        if (node.left === null) {
+            this.set(parent, node, node.right);
+
+            return;
+        }
+
+        this.replace(node);
+    }
+
+    private set(position: Node<T>, compare: Node<T>, node: Node<T>|null): void {
+        if (position.left === compare) {
+            position.left = node;
+
+            return;
+        }
+
+        position.right = node;
+    }
+
+    private replace(node: Node<T>): void {
+        if (!node.left) {
+            throw new Error('set node error');
+        }
+
+        const replacemant = this.findMax(node.left);
+        const left = replacemant.left;
+
+        replacemant.left = node.left;
+        replacemant.right = node.right;
+
+        if (!node.parent) {
+            this.root = replacemant;
+        } else if (node.parent.left === node) {
+            node.parent.left = replacemant;
+        } else {
+            node.parent.right = replacemant;
+        }
+
+        if (!replacemant.parent) {
+            return;
+        }
+
+        if (replacemant.parent.left === replacemant) {
+            replacemant.parent.left = left;
+        } else {
+            replacemant.parent.right = left;
+        }
+    }
+
+    private findMin(node: Node<T>): Node<T> {
+        if (node.left === null) {
+            return node;
+        }
+
+        return this.findMin(node.left);
+    }
+
+    private findMax(node: Node<T>): Node<T> {
+        if (node.right === null) {
+            return node;
+        }
+
+        return this.findMax(node.right);
     }
 
     private leftRotation(node: Node<T>): Node<T> {
