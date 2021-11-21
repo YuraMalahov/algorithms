@@ -1,41 +1,40 @@
 {
-    "compilerOptions": {
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "lib": ["es2017"],
-      "module": "commonjs",
-      "target": "es2017",
-      "sourceMap": true,
-      "moduleResolution": "node",
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noImplicitAny": true,
-      "strictNullChecks": true,
-      "types": [
-        "node",
-        "reflect-metadata",
-        "jest"
-      ],
-      "resolveJsonModule": true,
-      "importHelpers": false,
-      "declaration": true,
-      "strict": true,
-      "outDir": "dist",
-      "baseUrl": ".",
-      "paths": {
-        "*": ["./node_modules/*"]
-      },
-      "typeRoots": ["./node_modules/@types"]
-    },
-    "include": [
-      "src/**/*.ts",
-      "index.ts"
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": ["es2019"],
+    "module": "commonjs",
+    "target": "es2019",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "types": [
+      "node",
+      "reflect-metadata",
+      "jest"
     ],
-    "exclude": [
-      "node_modules",
-      "**/*.spec.ts",
-      "tests/integration"
-    ]
-  }
-  
+    "resolveJsonModule": true,
+    "importHelpers": false,
+    "declaration": true,
+    "strict": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["./node_modules/*"]
+    },
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "tests/integration"
+  ]
+}
