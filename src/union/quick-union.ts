@@ -8,6 +8,9 @@ export class QuickUnion {
         }
     }
 
+    /*
+    connects two components
+    */
     public union(first: number, second: number): boolean {
         const firstRoot = this.root(first);
         const secondRoot = this.root(second);
@@ -21,15 +24,23 @@ export class QuickUnion {
         return true;
     }
 
+    /*
+    check if components are connected
+    */
     public connected(first: number, second: number): boolean {
         return this.root(first) === this.root(second);
     }
 
+    /*
+    find root
+    */
     private root(searched: number): number {
-        while (searched !== this.ids[searched]) {
-            searched = this.ids[searched];
+        let index = searched;
+
+        while (index !== this.ids[index]) {
+            index = this.ids[index];
         }
 
-        return searched;
+        return index;
     }
 }
