@@ -1,11 +1,16 @@
+import { UnionInterface } from './quick-union';
 
-export class QuickFind {
+export class QuickFind implements UnionInterface  {
     private ids: number[] = [];
 
     constructor(size: number) {
         for (let i = 0; i < size; i++) {
             this.ids[i] = i;
         }
+    }
+
+    public getConnectionsList(): number[] {
+        return [...this.ids];
     }
 
     public union(first: number, second: number): boolean {
