@@ -16,6 +16,7 @@ export class QuickFind {
         const firstValue = this.ids[first];
         const secondValue = this.ids[second];
 
+        // go through every element and update it
         for (let i = 0, len = this.ids.length; i < len; i++) {
             if (this.ids[i] === firstValue) {
                 this.ids[i] = secondValue;

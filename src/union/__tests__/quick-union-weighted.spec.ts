@@ -13,14 +13,25 @@ describe('QuickUnion', () => {
             expect(quickUnionWeighted.connected(0, 1)).toEqual(true);
         });
 
-        test('no connections 0 - 2', () => {
-            expect(quickUnionWeighted.connected(0, 2)).toEqual(false);
+        test('no connections 1 - 2', () => {
+            expect(quickUnionWeighted.connected(1, 2)).toEqual(false);
         });
 
         test('connect 0 - 2', () => {
             expect(quickUnionWeighted.union(0, 2)).toEqual(true);
             expect(quickUnionWeighted.connected(0, 2)).toEqual(true);
             expect(quickUnionWeighted.connected(1, 2)).toEqual(true);
+        });
+
+        test('connect 6 - 5', () => {
+            expect(quickUnionWeighted.union(6, 5)).toEqual(true);
+            expect(quickUnionWeighted.connected(6, 5)).toEqual(true);
+        });
+
+        test('connect 6 - 7', () => {
+            expect(quickUnionWeighted.union(6, 7)).toEqual(true);
+            expect(quickUnionWeighted.connected(6, 7)).toEqual(true);
+            expect(quickUnionWeighted.connected(5, 7)).toEqual(true);
         });
 
         test('connect 8 - 9', () => {

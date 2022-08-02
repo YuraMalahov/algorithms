@@ -2,6 +2,7 @@
 export interface UnionInterface {
     union(first: number, second: number): boolean;
     connected(first: number, second: number): boolean;
+    getConnectionsList(): number[];
 }
 
 export class QuickUnion implements UnionInterface {
@@ -11,6 +12,10 @@ export class QuickUnion implements UnionInterface {
         for (let i = 0; i < size; i++) {
             this.ids[i] = i;
         }
+    }
+
+    public getConnectionsList(): number[] {
+        return [...this.ids];
     }
 
     /*

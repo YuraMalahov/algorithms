@@ -11,6 +11,10 @@ export class QuickUnionWeighted implements UnionInterface {
         }
     }
 
+    public getConnectionsList(): number[] {
+        return [...this.ids];
+    }
+
     /*
     connects two components
     */
