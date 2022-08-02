@@ -1,3 +1,3 @@
 # algorithms
 
-Playing with algorithms from book "Algorithms" by Robert Sedge
+Playing with algorithms from book "Algorithms" by Robert Sedgewick
