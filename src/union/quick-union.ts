@@ -1,5 +1,10 @@
 
-export class QuickUnion {
+export interface UnionInterface {
+    union(first: number, second: number): boolean;
+    connected(first: number, second: number): boolean;
+}
+
+export class QuickUnion implements UnionInterface {
     private ids: number[] = [];
 
     constructor(size: number) {

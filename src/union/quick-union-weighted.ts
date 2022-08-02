@@ -1,5 +1,6 @@
+import { UnionInterface } from './quick-union';
 
-export class QuickUnionWeighted {
+export class QuickUnionWeighted implements UnionInterface {
     private ids: number[] = [];
     private size: number[] =[];
 
@@ -46,13 +47,15 @@ export class QuickUnionWeighted {
     private root(searched: number): number {
         this.validate(searched);
 
-        while (searched !== this.ids[searched]) {
-            // falatter tree by attaching subtree to root element
-            this.ids[searched] = this.ids[this.ids[searched]];
-            searched = this.ids[searched];
+        let index = searched;
+
+        while (index !== this.ids[index]) {
+            // falatter tree by attaching subtree to the grant parent element
+            this.ids[index] = this.ids[this.ids[index]];
+            index = this.ids[index];
         }
 
-        return searched;
+        return index;
     }
 
     private validate(searched: number): void {
