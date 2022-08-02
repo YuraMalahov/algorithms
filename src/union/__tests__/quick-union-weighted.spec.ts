@@ -33,5 +33,23 @@ describe('QuickUnion', () => {
             expect(quickUnionWeighted.connected(0, 8)).toEqual(true);
             expect(quickUnionWeighted.connected(0, 9)).toEqual(true);
         });
+
+        test('throws error 0 - 11', () => {
+            expect(() => {
+                quickUnionWeighted.connected(0, 11)
+            }).toThrow();
+        });
+
+        test('throws error 11 - 0', () => {
+            expect(() => {
+                quickUnionWeighted.connected(11, 0)
+            }).toThrow();
+        });
+
+        test('throws error 11 - 11', () => {
+            expect(() => {
+                quickUnionWeighted.connected(11, 11)
+            }).toThrow();
+        });
     });
 });

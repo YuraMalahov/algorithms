@@ -1,11 +1,8 @@
 
 export class QuickUnion {
     private ids: number[] = [];
-    private size: number;
 
     constructor(size: number) {
-        this.size = size;
-
         for (let i = 0; i < size; i++) {
             this.ids[i] = i;
         }
@@ -50,8 +47,8 @@ export class QuickUnion {
     }
 
     private validate(searched: number): void {
-        if (searched >= this.size) {
-            throw new Error(`input: ${searched} is bigger than union size: ${this.size}`);
+        if (searched >= this.ids.length) {
+            throw new Error(`input: ${searched} is bigger than union size: ${this.ids.length}`);
         }
     }
 }
