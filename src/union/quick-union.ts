@@ -15,8 +15,6 @@ export class QuickUnion {
     connects two components
     */
     public union(first: number, second: number): boolean {
-        this.validate(first, second);
-
         const firstRoot = this.root(first);
         const secondRoot = this.root(second);
 
@@ -33,8 +31,6 @@ export class QuickUnion {
     check if components are connected
     */
     public connected(first: number, second: number): boolean {
-        this.validate(first, second);
-
         return this.root(first) === this.root(second);
     }
 
@@ -42,6 +38,8 @@ export class QuickUnion {
     find root
     */
     private root(searched: number): number {
+        this.validate(searched);
+
         let index = searched;
 
         while (index !== this.ids[index]) {
@@ -51,9 +49,9 @@ export class QuickUnion {
         return index;
     }
 
-    private validate(first: number, second: number): void {
-        if (first > this.size || second > this.size) {
-            throw new Error(`input is bigger than actual size: ${this.size}`);
+    private validate(searched: number): void {
+        if (searched >= this.size) {
+            throw new Error(`input: ${searched} is bigger than union size: ${this.size}`);
         }
     }
 }
