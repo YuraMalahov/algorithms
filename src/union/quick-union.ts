@@ -53,7 +53,7 @@ export class QuickUnion {
 
     private validate(first: number, second: number): void {
         if (first > this.size || second > this.size) {
-            throw new Error(`input is bigger than actual size'${this.size}'`);
+            throw new Error(`input is bigger than actual size: ${this.size}`);
         }
     }
 }
