@@ -21,6 +21,7 @@ export class ResizableArray<T> {
     public pop(): T {
         this.current--;
         const value = this.array[this.current];
+        this.array[this.current] = null as unknown as T;
 
         if (this.current * 4 <= this.length) {
             this.resize(this.length / 2);
