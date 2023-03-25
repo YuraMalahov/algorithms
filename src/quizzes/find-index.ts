@@ -7,7 +7,7 @@ function searchInsert(nums: number[], target: number): number {
 
     if (nums[mid] == target) {
       return mid;
-    } else if (nums[mid] > target) {
+    } else if (target < nums[mid]) {
       end = mid-1;
     } else {
       start = mid+1;
