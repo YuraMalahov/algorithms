@@ -22,14 +22,6 @@ def buildMenu(names, values, calories):
                           calories[i]))
     return menu
 
-def buildLargeMenu(numItems, maxVal, maxCost):
-    items = []
-    for i in range(numItems):
-        items.append(Food(str(i),
-                          random.randint(1, maxVal),
-                          random.randint(1, maxCost)))
-    return items
-
 def greedy(items, maxCost, keyFunction):
     """Assumes items a list, maxCost >= 0,
          keyFunction maps elements of Items to numbers"""
@@ -51,15 +43,11 @@ def testGreedy(items, constraint, keyFunction):
         print('   ', item)
 
 def testGreedys(foods, maxUnits):
-    print('Use greedy by value to allocate', maxUnits,
-          'calories')
+    print('Use greedy by value to allocate', maxUnits, 'calories')
     testGreedy(foods, maxUnits, Food.getValue)
-    print('\nUse greedy by cost to allocate', maxUnits,
-          'calories')
-    testGreedy(foods, maxUnits,
-               lambda x: 1/Food.getCost(x))
-    print('\nUse greedy by density to allocate', maxUnits,
-          'calories')
+    print('\nUse greedy by cost to allocate', maxUnits, 'calories')
+    testGreedy(foods, maxUnits, lambda x: 1/Food.getCost(x))
+    print('\nUse greedy by density to allocate', maxUnits, 'calories')
     testGreedy(foods, maxUnits, Food.density)
 
 def maxVal(toConsider, avail):
