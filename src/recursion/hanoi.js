@@ -1,18 +1,21 @@
-"use strict";
+const from1 = [3,2,1];
+const to1 = [];
+const buffer1 = [];
 
-function hanoi(number, src, dst, hlp) {
-    if (number === 1) {
-        dst.push(src.pop());
-        return;
-    }
-
-    hanoi(number-1, src, hlp, dst);
-    dst.push(src.pop());
-    hanoi(number-1, hlp, dst, src);
+function move(from, to) {
+  to.push(from.pop());
 }
 
-var a=[9,8,7,6,5,4,3,2,1,0], b=[], c=[];
+function hanoi(n, from, buffer, to) {
+  if (n === 0) {
+    return;
+  }
 
-hanoi(10, a,b,c);
+  hanoi(n-1, from, to, buffer);
+  move(from, to);
+  hanoi(n-1, buffer, from, to);
+}
 
-console.log(a,b,c);
+hanoi(3, from1, buffer1, to1);
+
+console.log(from1, buffer1, to1);
