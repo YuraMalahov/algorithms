@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Walker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
+</head>
+<body>
+  <canvas id="walkerCanvas" width="800" height="600"></canvas>
+  <script>
+    const canvas_size = 800;
+    const square_size = 5;
+    const directions = 8;
+    const positions = [];
+    const new_x = random_position();
+    const new_y = random_position();
+
+    positions.push([new_x, new_y]);
+
+    function random_position() {
+      return Math.round(Math.random() * (canvas_size - square_size));
+    }
+
+    function get_random_int_inclusive(min, max) {
+      const minCeiled = Math.ceil(min);
+      const maxFloored = Math.floor(max);
+      return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+    }
+
+    function random_direction(x, y) {
+      const direction = get_random_int_inclusive(0, directions - 1);
+      if (direction == 0) {
+        return [x + square_size, y];
+      }
+      if (direction == 1) {
+        return [x + square_size, y + square_size];
+      }
+      if (direction == 2) {
+        return [x, y + square_size];
+      }
+      if (direction == 3) {
+        return [x - square_size, y + square_size];
+      }
+      if (direction == 4) {
+        return [x - square_size, y];
+      }
+      if (direction == 5) {
+        return [x - square_size, y - square_size];
+      }
+      if (direction == 6) {
+        return [x, y - square_size];
+      }
+      if (direction == 7) {
+        return [x + square_size, y - square_size];
+      }
+    }
+
+    function gen_nex_position() {
+      const [last_x, last_y] = positions[positions.length - 1];
+
+      while (true) {
+        const [new_x, new_y] = random_direction(last_x, last_y);
+        if (
+          new_x >= square_size && new_x <= (canvas_size - square_size) &&
+          new_y >= square_size && new_y <= (canvas_size - square_size) 
+        ) {
+          positions.push([new_x, new_y]);
+          break;
+        }
+      }
+    }
+
+    function setup() {
+      createCanvas(canvas_size, canvas_size);
+    }
+
+    function draw() {
+      background(111);
+
+      for (let i = 0; i < positions.length; i++) {
+        const [x, y] = positions[i];
+
+        if (i <= positions.length - 3) {
+          fill(255, 255, 255);
+        } else {
+          fill(255, 0, 0);
+        }
+
+        square(x, y, square_size);
+      }
+
+      gen_nex_position();
+    }
+  </script>
+</body>
+</html>
