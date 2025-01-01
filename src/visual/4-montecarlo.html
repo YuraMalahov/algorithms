@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random Walker</title>
+  <title>Montecarlo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,7 +22,6 @@
   <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
 </head>
 <body>
-  <canvas id="walkerCanvas" width="800" height="600"></canvas>
   <script>
     let values = [];
     let norms = [];
@@ -52,9 +51,11 @@
       const n = montecarlo();
       const index = parseInt(n * width);
 
-      values[index] += 1;
+      values[index] += 2;
 
       stroke(255);
+      strokeWeight(2);
+
       let normalization = false;
       let maxy = 0;
 
