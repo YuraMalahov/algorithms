@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Walker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
+</head>
+<body>
+  <canvas id="walkerCanvas" width="800" height="600"></canvas>
+  <script>
+    let values = [];
+    let norms = [];
+  
+    function montecarlo() {
+      while (true) {
+        let r1 = random(1);
+        let r2 = random(1);
+        let y = r1 * r1;
+
+        if (r2 < y) {
+          return r1;
+        }
+      }
+    }
+
+    function setup() {
+      createCanvas(400, 300);
+
+      values = new Array(width).fill(0);
+      norms = new Array(width).fill(0);
+    }
+
+    function draw() {
+      background(100);
+
+      const n = montecarlo();
+      const index = parseInt(n * width);
+
+      values[index] += 1;
+
+      stroke(255);
+      let normalization = false;
+      let maxy = 0;
+
+      // Draw the histogram
+      for (let i = 0; i < values.length; i++) {
+        line(i, height, i, height - norms[i]);
+
+        // Normalization
+        if (values[i] > height) {
+          normalization = true;
+        }
+        // Find the max value
+        if (values[i] > maxy) {
+          maxy = values[i];
+        }
+      }
+
+      // Normalize the values
+      for (let i = 0; i < values.length; i++) {
+        if (normalization) {
+          // Normalize the values
+          norms[i] = (values[i] / maxy) * height;
+        } else {
+          // No normalization
+          norms[i] = values[i];
+        }
+      }
+    }
+  </script>
+</body>
+</html>
