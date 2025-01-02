@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ball</title>
+  <title>Aceleration</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -26,22 +26,31 @@
     class Ball {
       #location;
       #velocity;
+      #aceleration;
 
       constructor() {
-        this.#location = createVector(width / 2, height / 2);
-        this.#velocity = createVector(2.5, -2);
+        this.#location = createVector(random(width), random(height));
+        this.#velocity = createVector(1, 1);
+        this.#aceleration = createVector(random(0.005, 0.01), 0);
       }
 
       move() {
+        this.#velocity.add(createVector(random(-0.1, 0.1), random(-0.1, 0.1)));
         this.#location.add(this.#velocity);
       }
 
-      bounce() {
-        if (this.#location.x > width || this.#location.x < 0) {
-          this.#velocity.x = this.#velocity.x * -1;
+      border() {
+        if (this.#location.x > width) {
+          this.#location.x = 0;
         }
-        if (this.#location.y > height || this.#location.y < 0) {
-          this.#velocity.y = this.#velocity.y * -1;
+        if (this.#location.x < 0) {
+          this.#location.x = width;
+        }
+        if (this.#location.y > height) {
+          this.#location.y = 0;
+        }
+        if (this.#location.y < 0) {
+          this.#location.y = height;
         }
       }
 
@@ -49,22 +58,26 @@
         stroke(0);
         strokeWeight(2);
         fill(127);
-        ellipse(this.#location.x, this.#location.y, 48, 48);
+        ellipse(this.#location.x, this.#location.y, 12, 12);
       }
     }
 
-    let ball;
+    let balls = [];
 
     function setup() {
       createCanvas(400, 300);
-      ball = new Ball();
+      for (let i = 0; i < 5; i++) {
+        balls.push(new Ball());
+      }
     }
 
     function draw() {
       background(255);
-      ball.move();
-      ball.bounce();
-      ball.display();
+      for (let ball of balls) {
+        ball.move();
+        ball.border();
+        ball.display();
+      }
     }
   </script>
 </body>
