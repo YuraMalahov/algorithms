@@ -19,7 +19,7 @@
       border: 1px solid #000;
     }
   </style>
-  <script src="./p5.min.js"></script>
+  <script src="../p5.min.js"></script>
 </head>
 <body>
   <script>
@@ -35,7 +35,7 @@
       }
 
       move() {
-        this.#velocity.add(this.#aceleration);
+        this.#velocity.add(createVector(random(-0.1, 0.1), random(-0.1, 0.1)));
         this.#location.add(this.#velocity);
       }
 
@@ -58,7 +58,7 @@
         stroke(0);
         strokeWeight(2);
         fill(127);
-        ellipse(this.#location.x, this.#location.y, 4, 4);
+        ellipse(this.#location.x, this.#location.y, 12, 12);
       }
     }
 
@@ -66,7 +66,7 @@
 
     function setup() {
       createCanvas(400, 300);
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 5; i++) {
         balls.push(new Ball());
       }
     }

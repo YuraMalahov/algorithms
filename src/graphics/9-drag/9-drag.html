@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Force</title>
+  <title>Drag</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,7 +19,7 @@
       border: 1px solid #000;
     }
   </style>
-  <script src="./p5.min.js"></script>
+  <script src="../p5.min.js"></script>
 </head>
 <body>
   <script>
@@ -29,18 +29,15 @@
       #location;
       #velocity;
       #aceleration;
-      #mass;
 
       constructor() {
-        this.#location = createVector(random(width), random(height));
+        this.#location = createVector(width/2, height/2);
         this.#velocity = createVector(0, 0);
         this.#aceleration = createVector(0, 0);
-        this.#mass = random(1, 5);
       }
 
       applyForce(force) {
-        const f = p5.Vector.div(force, this.#mass);
-        this.#aceleration.add(f);
+        this.#aceleration.add(force);
       }
 
       update() {
@@ -64,38 +61,40 @@
         stroke(0);
         strokeWeight(2);
         fill(127);
-        ellipse(this.#location.x, this.#location.y, this.#mass * 10, this.#mass * 10);
+        ellipse(this.#location.x, this.#location.y, ballRadius * 2, ballRadius * 2);
       }
 
-      get mass() {
-        return this.#mass;
+      get velocity() {
+        return this.#velocity;
       }
     }
 
-    let balls = [];
+    let ball;
 
     function setup() {
       createCanvas(400, 300);
 
-      for (let i = 0; i < 5; i++) {
-        balls.push(new Ball());
-      }
+      ball = new Ball();
     }
 
     function draw() {
       background(255);
 
-      balls.forEach(ball => {
-        const gravity = createVector(0, 0.2);
-        gravity.mult(ball.mass);
-        ball.applyForce(gravity);
-        const wind = createVector(0.01, 0);
-        ball.applyForce(wind);
+      const gravity = createVector(0, 0.2);
+      ball.applyForce(gravity);
+      const wind = createVector(0.01, 0);
+      ball.applyForce(wind);
 
-        ball.update();
-        ball.border();
-        ball.display();
-      });
+      const drag = ball.velocity.copy();
+      drag.normalize();
+      const c = -0.03;
+      const speed = ball.velocity.mag();
+      drag.mult(c*speed*speed);
+      ball.applyForce(drag);
+
+      ball.update();
+      ball.border();
+      ball.display();
     }
   </script>
 </body>

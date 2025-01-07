@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ball</title>
+  <title>Aceleration</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,7 +19,7 @@
       border: 1px solid #000;
     }
   </style>
-  <script src="./p5.min.js"></script>
+  <script src="../p5.min.js"></script>
 </head>
 <body>
   <script>
@@ -28,42 +28,39 @@
       #velocity;
 
       constructor() {
-        this.#location = createVector(width / 2, height / 2);
-        this.#velocity = createVector(2.5, -2);
+        this.#location = createVector(width/2, height/2);
+        this.#velocity = createVector(0, 0);
       }
 
-      move() {
+      update() {
+        const mouse = createVector(mouseX, mouseY);
+        const direction = p5.Vector.sub(mouse, this.#location);
+        direction.setMag(0.1);
+
+        this.#velocity.add(direction);
         this.#location.add(this.#velocity);
-      }
-
-      bounce() {
-        if (this.#location.x > width || this.#location.x < 0) {
-          this.#velocity.x = this.#velocity.x * -1;
-        }
-        if (this.#location.y > height || this.#location.y < 0) {
-          this.#velocity.y = this.#velocity.y * -1;
-        }
+        this.#velocity.limit(5);
       }
 
       display() {
         stroke(0);
         strokeWeight(2);
         fill(127);
-        ellipse(this.#location.x, this.#location.y, 48, 48);
+        ellipse(this.#location.x, this.#location.y, 24, 24);
       }
     }
 
     let ball;
 
     function setup() {
-      createCanvas(400, 300);
+      createCanvas(500, 500);
       ball = new Ball();
     }
 
     function draw() {
       background(255);
-      ball.move();
-      ball.bounce();
+
+      ball.update();
       ball.display();
     }
   </script>
