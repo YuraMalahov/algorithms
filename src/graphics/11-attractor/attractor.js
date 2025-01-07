@@ -14,12 +14,12 @@ class Attractor {
   }
 
   attract(m) {
-    let force = p5.Vector.sub(this.#position, m.position); // Calculate direction of force
-    let d = force.mag();                                   // Distance between objects
-    d = constrain(d, 5.0, 25.0);                           // Limiting the distance to eliminate "extreme" results for very close or very far objects
-    force.normalize();                                     // Normalize vector (distance doesn't matter here, we just want this vector for direction)
-    let strength = (g * this.#mass * m.mass) / (d * d);    // Calculate gravitional force magnitude
-    force.mult(strength);                                  // Get force vector --> magnitude * direction
+    let force = p5.Vector.sub(this.#position, m.position);            // Calculate direction of force
+    let distance = force.mag();                                       // Distance between objects
+    distance = constrain(distance, 5.0, 25.0);                        // Limiting the distance to eliminate "extreme" results for very close or very far objects
+    force.normalize();                                                // Normalize vector (distance doesn't matter here, we just want this vector for direction)
+    let strength = (GRAVITY * this.#mass * m.mass) / (distance ** 2); // Calculate gravitional force magnitude
+    force.mult(strength);                                             // Get force vector --> magnitude * direction
 
     return force;
   }

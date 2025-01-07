@@ -2,7 +2,7 @@ let movers = new Array(3).fill(null);
 
 let attractor;
 
-const g = 1;
+const GRAVITY = 1;
 
 function setup() {
   createCanvas(640, 360);
