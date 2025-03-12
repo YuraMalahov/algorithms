@@ -17,21 +17,18 @@ function fib2(n: number): number {
         if (n < 0) {
             throw new Error('Negative number');
         }
-    
+
         if (fibMap.has(n - 1) && fibMap.has(n - 2)) {
             const result = fibMap.get(n - 1) + fibMap.get(n - 2);
-    
             fibMap.set(n, result);
-    
             return result;
         }
-    
+
         if (n < 2) {
             fibMap.set(n, 1);
-    
             return 1;
         }
-    
+
         return fibInpruved(n - 1) + fibInpruved(n - 2);
     }
 
