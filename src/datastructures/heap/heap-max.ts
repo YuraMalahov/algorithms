@@ -1,3 +1,15 @@
+/*
+Time Complexities
+    Insertion: 𝑂(log𝑛)
+    Deletion: 𝑂(log𝑛)
+    Peek (Get Min/Max): 𝑂(1)
+    Building a Heap: 𝑂(𝑛)
+
+Use Cases
+    Priority Queues: A binary heap is commonly used to implement a priority queue.
+    Heap Sort: Sorting algorithm with 𝑂(𝑛log𝑛) complexity.
+    Graph Algorithms: Used in Dijkstra’s and Prim’s algorithms.
+*/
 
 export class HeapMax {
     private items: number[];
