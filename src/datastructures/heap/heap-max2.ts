@@ -1,10 +1,12 @@
 
+const ROOT = 1;
+
 export class HeapMax {
     private items: number[];
     private count: number;
 
     constructor() {
-        this.items = [NaN];
+        this.items = [Infinity];
         this.count = 0;
     }
 
@@ -22,10 +24,10 @@ export class HeapMax {
             return null;
         }
 
-        const max = this.items[1];
+        const max = this.items[ROOT];
 
-        this.exchange(1, this.count--);
-        this.sink(1);
+        this.exchange(ROOT, this.count--);
+        this.sink(ROOT);
 
         return max;
     }
@@ -34,10 +36,13 @@ export class HeapMax {
         let child = current;
         let parent = Math.floor(child/2);
 
-        while (child > 1 && this.items[child] > this.items[parent]) {
+        // while parent exists and the child is greater than the parent
+        while (child > ROOT && this.items[child] > this.items[parent]) {
             this.exchange(parent, child);
 
+            // find new child
             child = Math.floor(child/2);
+            // find the new parent
             parent = Math.floor(child/2);
         }
     }
@@ -46,13 +51,18 @@ export class HeapMax {
         let parent = current;
         let child;
 
+        // while child exists
         while (parent * 2 <= this.count) {
             child = parent * 2;
 
+            // if the right child exists and is greater than the left child
+            // move to the right child
             if (child+1 <= this.count && this.items[child] < this.items[child+1]) {
                 child++;
             }
 
+            // if the parent is greater than the child
+            // we are done
             if (this.items[parent] > this.items[child]) {
                 break;
             }

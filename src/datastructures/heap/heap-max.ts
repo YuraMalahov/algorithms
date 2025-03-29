@@ -11,6 +11,8 @@ Use Cases
     Graph Algorithms: Used in Dijkstra’s and Prim’s algorithms.
 */
 
+const ROOT = 0;
+
 export class HeapMax {
     private items: number[];
     private lastPosition: number;
@@ -21,7 +23,7 @@ export class HeapMax {
     }
 
     private swim(position: number): void {
-        if (position === 0) {
+        if (position === ROOT) {
             return;
         }
 
@@ -69,10 +71,10 @@ export class HeapMax {
             return null;
         }
 
-        const item = this.items[0];
+        const item = this.items[ROOT];
 
-        this.exchange(0, this.lastPosition--);
-        this.sink(0);
+        this.exchange(ROOT, this.lastPosition--);
+        this.sink(ROOT);
 
         return item;
     }
