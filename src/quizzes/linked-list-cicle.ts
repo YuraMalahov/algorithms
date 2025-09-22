@@ -1,18 +1,16 @@
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     val: number
- *     next: ListNode | null
- *     constructor(val?: number, next?: ListNode | null) {
- *         this.val = (val===undefined ? 0 : val)
- *         this.next = (next===undefined ? null : next)
- *     }
- * }
- */
+class ListNode {
+  val: number;
+  next: ListNode | undefined;
 
-function hasCycle(head: ListNode | null): boolean {
+  constructor(val: number, next?: ListNode | undefined) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function hasCycle(head: ListNode | undefined): boolean {
   const table = new Set();
-  let current = head;
+  let current: ListNode | undefined = head;
 
   while (current) {
     if (table.has(current)) {
@@ -26,20 +24,21 @@ function hasCycle(head: ListNode | null): boolean {
   return false;
 };
 
-function hasCycle2(head: ListNode | null): boolean {
+function hasCycle2(head: ListNode | undefined): boolean {
   let current = head?.next;
-  let tail = head;
+  let follower = head;
   let i = 1;
 
   while (current) {
-    if (tail === current) {
+    if (follower === current) {
       return true;
     }
 
     current = current.next;
 
+    // move follower every second step
     if (i % 2 === 0) {
-      tail = tail?.next;
+      follower = follower?.next;
     }
 
     i++;
@@ -47,3 +46,21 @@ function hasCycle2(head: ListNode | null): boolean {
 
   return false;
 };
+
+
+const linkedList = new ListNode(3);
+linkedList.next = new ListNode(2);
+linkedList.next.next = new ListNode(0);
+linkedList.next.next.next = new ListNode(-4);
+linkedList.next.next.next.next = linkedList.next;
+
+const linkedList2 = new ListNode(3);
+linkedList2.next = new ListNode(2);
+linkedList2.next.next = new ListNode(0);
+linkedList2.next.next.next = new ListNode(-4);
+
+console.log(hasCycle(linkedList)); // true
+console.log(hasCycle(linkedList2)); // false
+
+console.log(hasCycle2(linkedList)); // true
+console.log(hasCycle2(linkedList2)); // false

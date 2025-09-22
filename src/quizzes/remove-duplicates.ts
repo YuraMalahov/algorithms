@@ -14,20 +14,23 @@ function removeDuplicates(nums: number[]): number {
     }
 
     if (next < length) {
-      [nums[i+1], nums[next]] = [nums[next], nums[i+1]];
+      let tmp = nums[i+1]
+      nums[i+1] = nums[next];
+      nums[next] = tmp;
     }
 
     next++;
     i++;
   }
 
+  nums.length = i;
+
   return i;
 }
 
-let a = [];
 let r = 0;
 
-a = [1,1,2,2,3,3];
+let a = [1,1,2,2,3,3];
 r = removeDuplicates(a);
 console.log(r, a);
 

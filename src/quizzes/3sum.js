@@ -29,10 +29,9 @@ function sumOf3(numbers) {
                 end--;
             }
         }
-        if (i < count - 1) {
-            while (numbers[i] === numbers[i + 1]) {
-                i++;
-            }
+
+        while (i < count - 1 && numbers[i] === numbers[i + 1]) {
+            i++;
         }
     }
 
